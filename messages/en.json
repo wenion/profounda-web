@@ -1,0 +1,116 @@
+{
+  "Common": {
+    "dashboard": "Overview",
+    "portfolio": "Portfolio",
+    "rebalance": "Rebalance",
+    "account": "Account",
+    "billing": "Billing",
+    "login": "Sign in",
+    "signup": "Sign up"
+  },
+  "Home": {
+    "eyebrow": "Leading Institutions · Real-Time 13F Tracking",
+    "headline": "When top fund managers quietly buy the same thing, it shouldn't be a secret.",
+    "description": "Profounda continuously tracks SEC 13F filings from leading institutions including Buffett, Ackman and Klarman. Through systematic modeling and signal extraction, we turn consensus hidden across tens of thousands of holdings into actionable signals.",
+
+    "nextRebalance": "Next major rebalance",
+
+    "metrics": {
+      "cagr": "20Y Backtest CAGR",
+      "liveReturn": "Live Return (2026 YTD)",
+      "spy": "SPY · Same Period",
+      "maxDrawdown": "Max Drawdown",
+      "sharpe": "Sharpe"
+    },
+
+    "performance": {
+      "eyebrow": "Performance",
+      "title": "Performance",
+      "placeholder": "Performance chart will be displayed here"
+    },
+
+    "community": {
+      "eyebrow": "Community",
+      "title": "Community"
+    }
+  },
+  "Login": {
+    "eyebrow": "Account sign in",
+    "title": "Welcome back",
+    "description": "Sign in to Profounda to continue managing your portfolio.",
+    "google": "Continue with Google",
+    "or": "or",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "signingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create account",
+    "disclaimer": "Profounda provides data, models and analysis for research and informational purposes only and does not constitute investment advice.",
+
+    "hero": {
+      "eyebrow": "PROFOUNDA",
+      "title": "Turn institutional signals into your portfolio.",
+      "description": "From institutional 13F consensus to your actual holdings and rebalance decisions, all in one system.",
+      "tracking": "Continuously track 13F position changes from leading institutions",
+      "portfolio": "Connect strategy signals with your actual portfolio",
+      "rebalance": "Generate clear rebalance actions from your target allocation"
+    },
+
+    "errors": {
+      "invalidCredentials": "Unable to sign in. Please check your email and password.",
+      "google": "Unable to sign in with Google. Please try again."
+    }
+  },
+  "Signup": {
+    "eyebrow": "Create account",
+    "title": "Start with Profounda",
+    "description": "Create your account and start building and managing your portfolio.",
+    "google": "Continue with Google",
+    "or": "or",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 6 characters",
+    "createAccount": "Create account",
+    "creating": "Creating account...",
+    "hasAccount": "Already have an account?",
+    "login": "Sign in",
+    "disclaimer": "Profounda provides data, models and analysis for research and informational purposes only and does not constitute investment advice.",
+
+    "hero": {
+      "eyebrow": "PROFOUNDA",
+      "title": "Turn institutional signals into your portfolio.",
+      "description": "From institutional 13F consensus to your actual holdings and rebalance decisions, all in one system.",
+      "tracking": "Continuously track 13F position changes from leading institutions",
+      "portfolio": "Connect strategy signals with your actual portfolio",
+      "rebalance": "Generate clear rebalance actions from your target allocation"
+    },
+
+    "errors": {
+      "signup": "Unable to create your account. Please check your details and try again.",
+      "google": "Unable to continue with Google. Please try again."
+    }
+  },
+  "PublicNavigation": {
+    "performance": "Performance",
+    "community": "Community",
+    "login": "Sign in",
+    "getStarted": "Get started"
+  },
+  "PublicFooter": {
+    "description": "Tracking institutional 13F holdings and extracting consensus through systematic modeling and signal analysis.",
+    "performance": "Performance",
+    "community": "Community",
+    "disclaimer": "Data, models and analysis provided by Profounda are for research and informational purposes only and do not constitute investment advice. Historical and backtested performance does not guarantee future results."
+  },
+  "AppNavigation": {
+    "dashboard": "Overview",
+    "portfolio": "Portfolio",
+    "rebalance": "Rebalance",
+    "account": "Account",
+    "billing": "Billing",
+    "logout": "Sign out"
+  }
+}
