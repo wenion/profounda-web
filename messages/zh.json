@@ -27,12 +27,44 @@
     "performance": {
       "eyebrow": "Performance",
       "title": "业绩",
-      "placeholder": "这里将展示业绩曲线"
+      "placeholder": "这里将展示业绩曲线",
+      "note": "2006-09 至 2026-07 策略回测，与实盘账户（2026-01 起）对比 SPY 买入持有。",
+      "backtest": "20 年回测",
+      "live": "实盘 (2026 至今)",
+      "strategy": "策略",
+      "spyBuyHold": "SPY 买入持有",
+      "initialToCurrent": "起始 → 现值",
+      "totalReturn": "总收益",
+      "spyReturn": "同期 SPY",
+      "maxDrawdown": "最大回撤",
+      "recentRebalances": "📋 查看最近两个季度调仓记录",
+      "hideRebalances": "收起调仓记录",
+      "buy": "买入",
+      "sell": "卖出",
+      "rebalanceSummary": "新买 {buys} / 卖出 {sells} / 延续持有 {held}"
+    },
+
+    "holdings": {
+      "eyebrow": "Portfolio",
+      "title": "持仓总览",
+      "note": "实盘账户当前实际持有的股票、成本价与浮动盈亏。",
+      "totalEquity": "账户总值",
+      "stockCash": "股票 / 现金",
+      "regime": "当前状态",
+      "symbol": "代码",
+      "shares": "股数",
+      "costPrice": "成本价",
+      "currentPrice": "现价",
+      "marketValue": "市值",
+      "weight": "权重",
+      "pnl": "盈亏"
     },
 
     "community": {
       "eyebrow": "Community",
-      "title": "社区"
+      "title": "社区",
+      "comingSoon": "即将开放",
+      "description": "和其他跟随同一套信号的投资者交流心得、复盘每个季度的调仓决策。"
     }
   },
 
@@ -98,6 +130,7 @@
 
   "PublicNavigation": {
     "performance": "业绩",
+    "holdings": "持仓总览",
     "community": "社区",
     "login": "登录",
     "getStarted": "免费开始"
@@ -115,7 +148,91 @@
     "portfolio": "持仓",
     "rebalance": "调仓助手",
     "account": "账户",
-    "billing": "订阅",
+    "billing": "订阅"
+  },
+
+  "AppHeader": {
+    "account": "账户",
     "logout": "退出登录"
+  },
+  "Dashboard": {
+    "eyebrow": "Overview",
+    "title": "总览",
+    "description": "查看你的投资组合、市场状态和最新调仓建议。",
+    "updatedAt": "数据更新于 {date}",
+
+    "metrics": {
+      "totalValue": "账户总值",
+      "currentPortfolio": "当前投资组合",
+      "stockValue": "股票市值",
+      "cash": "现金",
+      "accountAllocation": "{percentage}% 的账户资产",
+      "marketRegime": "当前市场状态",
+      "targetStockAllocation": "当前目标股票仓位 {percentage}%"
+    },
+
+    "holdings": {
+      "title": "当前持仓",
+      "description": "按当前组合权重排序",
+      "viewAll": "查看全部",
+      "weight": "权重",
+      "pnl": "盈亏"
+    },
+
+    "rebalance": {
+      "title": "最新调仓",
+      "description": "基于最新目标组合",
+      "openAssistant": "打开调仓助手",
+      "actions": {
+        "newBuy": "新买入",
+        "increase": "加仓",
+        "decrease": "减仓"
+      }
+    },
+
+    "allocation": {
+      "title": "资产配置",
+      "description": "当前账户股票与现金比例",
+      "stocks": "股票",
+      "cash": "现金"
+    }
+  },
+  "Rebalance": {
+    "eyebrow": "Rebalancing Assistant",
+    "title": "调仓助手",
+    "description": "按当前季度的目标组合，算出你该买什么、卖什么、买多少。",
+    "intro": "填入你目前实际持有的股票、成本价、股数，以及剩余现金，点击「计算」——系统会按本季度的目标持仓，告诉你具体该怎么调整，支持小数股。",
+
+    "form": {
+      "ticker": "股票代码",
+      "costPrice": "成本价",
+      "shares": "股数",
+      "cash": "剩余现金 ($)",
+      "addHolding": "添加一行持仓",
+      "remove": "删除持仓",
+      "calculate": "计算推荐操作"
+    },
+
+    "results": {
+      "title": "推荐调仓操作",
+      "totalValue": "当前账户总值",
+      "ticker": "代码",
+      "action": "操作",
+      "currentShares": "现有股数",
+      "targetShares": "目标股数",
+      "change": "建议变化",
+      "currentPrice": "现价",
+      "stopLoss": "止损价",
+      "note": "止损价按当前季度公开的风控规则估算（约 -15%）。不在目标名单里的持仓建议清仓，不代表看空，只代表本季度的共识信号已经切换到别的标的。此结果仅供参考，不构成投资建议。"
+    },
+
+    "actions": {
+      "new": "新买入",
+      "buy": "加仓",
+      "trim": "减仓",
+      "sell": "清仓",
+      "stop": "止损",
+      "hold": "维持"
+    }
   }
 }

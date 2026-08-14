@@ -1,44 +1,53 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+
+import {
+  Link,
+  usePathname,
+} from "@/i18n/navigation";
 
 const mainNavigation = [
   {
-    label: "总览",
+    labelKey: "dashboard",
     href: "/dashboard",
     icon: HomeIcon,
   },
   {
-    label: "持仓",
+    labelKey: "portfolio",
     href: "/portfolio",
     icon: PortfolioIcon,
   },
   {
-    label: "调仓助手",
+    labelKey: "rebalance",
     href: "/rebalance",
     icon: RebalanceIcon,
   },
-];
+] as const;
 
 const secondaryNavigation = [
   {
-    label: "账户",
+    labelKey: "account",
     href: "/account",
     icon: UserIcon,
   },
   {
-    label: "订阅",
+    labelKey: "billing",
     href: "/billing",
     icon: BillingIcon,
   },
-];
+] as const;
 
 export function AppSidebar() {
+  const t = useTranslations(
+    "AppNavigation",
+  );
+
   const pathname = usePathname();
 
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-white/10 bg-[#0B0F1A] md:flex md:flex-col">
+      {/* Logo */}
       <div className="flex h-16 items-center border-b border-white/10 px-6">
         <Link
           href="/dashboard"
@@ -53,11 +62,14 @@ export function AppSidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col px-3 py-6">
+        {/* Main */}
         <div className="space-y-1">
           {mainNavigation.map((item) => (
             <NavigationItem
               key={item.href}
-              {...item}
+              label={t(item.labelKey)}
+              href={item.href}
+              icon={item.icon}
               active={isActive(
                 pathname,
                 item.href,
@@ -68,17 +80,22 @@ export function AppSidebar() {
 
         <div className="my-6 border-t border-white/10" />
 
+        {/* Secondary */}
         <div className="space-y-1">
-          {secondaryNavigation.map((item) => (
-            <NavigationItem
-              key={item.href}
-              {...item}
-              active={isActive(
-                pathname,
-                item.href,
-              )}
-            />
-          ))}
+          {secondaryNavigation.map(
+            (item) => (
+              <NavigationItem
+                key={item.href}
+                label={t(item.labelKey)}
+                href={item.href}
+                icon={item.icon}
+                active={isActive(
+                  pathname,
+                  item.href,
+                )}
+              />
+            ),
+          )}
         </div>
 
         <div className="mt-auto px-3 pt-8">
@@ -95,7 +112,12 @@ export function AppSidebar() {
 
 type NavigationItemProps = {
   label: string;
-  href: string;
+  href:
+    | "/dashboard"
+    | "/portfolio"
+    | "/rebalance"
+    | "/account"
+    | "/billing";
   icon: React.ComponentType<{
     className?: string;
   }>;
@@ -131,7 +153,9 @@ function isActive(
 ) {
   return (
     pathname === href ||
-    pathname.startsWith(`${href}/`)
+    pathname.startsWith(
+      `${href}/`,
+    )
   );
 }
 

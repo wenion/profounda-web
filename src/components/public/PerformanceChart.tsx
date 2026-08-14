@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   CartesianGrid,
   Line,
@@ -14,6 +15,7 @@ import {
 import equityCurveBacktest from "@/data/performance/equity_curve_backtest.json";
 import equityCurveLive from "@/data/performance/equity_curve_live.json";
 import headline from "@/data/performance/headline.json";
+import rebalanceLog from "@/data/performance/rebalance_log.json";
 
 type PerformanceMode =
   | "backtest"
@@ -25,9 +27,30 @@ type EquityPoint = {
   spy: number;
 };
 
+type RebalanceAction = {
+  type: "buy" | "sell";
+  symbol: string;
+  detail: string;
+};
+
+type RebalanceLogItem = {
+  quarter: string;
+  date: string;
+  n_buys: number;
+  n_sells: number;
+  n_held: number;
+  actions: RebalanceAction[];
+  held_note?: string;
+};
+
 export function PerformanceChart() {
+  const t = useTranslations("Home");
+
   const [mode, setMode] =
     useState<PerformanceMode>("backtest");
+
+  const [showRebalanceLog, setShowRebalanceLog] =
+    useState(false);
 
   const data: EquityPoint[] =
     mode === "backtest"
@@ -38,6 +61,9 @@ export function PerformanceChart() {
     mode === "backtest"
       ? headline.backtest
       : headline.live_account;
+
+  const logs =
+    rebalanceLog as RebalanceLogItem[];
 
   return (
     <div className="mt-12 overflow-hidden rounded-xl border border-white/[0.08] bg-[#101521]">
@@ -50,7 +76,7 @@ export function PerformanceChart() {
               setMode("backtest")
             }
           >
-            20 年回测
+            {t("performance.backtest")}
           </ModeButton>
 
           <ModeButton
@@ -59,7 +85,7 @@ export function PerformanceChart() {
               setMode("live")
             }
           >
-            实盘 (2026 至今)
+            {t("performance.live")}
           </ModeButton>
         </div>
 
@@ -67,12 +93,12 @@ export function PerformanceChart() {
         <div className="flex items-center gap-6">
           <Legend
             color="#E4BC7A"
-            label="策略"
+            label={t("performance.strategy")}
           />
 
           <Legend
             color="#4FA9A0"
-            label="SPY"
+            label={t("performance.spyBuyHold")}
             dashed
           />
         </div>
@@ -117,11 +143,7 @@ export function PerformanceChart() {
                   ? "log"
                   : "auto"
               }
-              domain={
-                mode === "backtest"
-                  ? ["auto", "auto"]
-                  : ["auto", "auto"]
-              }
+              domain={["auto", "auto"]}
               allowDataOverflow={
                 mode === "backtest"
               }
@@ -135,14 +157,21 @@ export function PerformanceChart() {
                   "IBM Plex Mono, monospace",
               }}
               tickFormatter={(value) =>
-                `$${(value / 1000).toFixed(
-                  0,
-                )}k`
+                `$${(value / 1000).toFixed(0)}k`
               }
             />
 
             <Tooltip
-              content={<CurveTooltip />}
+              content={
+                <CurveTooltip
+                  strategyLabel={t(
+                    "performance.strategy",
+                  )}
+                  spyLabel={t(
+                    "performance.spyBuyHold",
+                  )}
+                />
+              }
               cursor={{
                 stroke:
                   "rgba(237,234,225,0.12)",
@@ -150,11 +179,12 @@ export function PerformanceChart() {
               }}
             />
 
-            {/* SPY first so strategy appears above it */}
             <Line
               type="monotone"
               dataKey="spy"
-              name="SPY"
+              name={t(
+                "performance.spyBuyHold",
+              )}
               stroke="#4FA9A0"
               strokeWidth={1.5}
               strokeDasharray="3 3"
@@ -170,7 +200,9 @@ export function PerformanceChart() {
             <Line
               type="monotone"
               dataKey="equity"
-              name="策略"
+              name={t(
+                "performance.strategy",
+              )}
               stroke="#E4BC7A"
               strokeWidth={2}
               dot={false}
@@ -188,14 +220,18 @@ export function PerformanceChart() {
       {/* Bottom statistics */}
       <div className="grid grid-cols-2 border-t border-white/[0.08] md:grid-cols-4">
         <CurveStat
-          label="起始 → 现值"
+          label={t(
+            "performance.initialToCurrent",
+          )}
           value={`${formatMoney(
             stats.initial,
           )} → ${formatMoney(stats.final)}`}
         />
 
         <CurveStat
-          label="总收益"
+          label={t(
+            "performance.totalReturn",
+          )}
           value={formatPct(
             stats.total_return_pct,
           )}
@@ -203,17 +239,65 @@ export function PerformanceChart() {
         />
 
         <CurveStat
-          label="同期 SPY"
+          label={t(
+            "performance.spyReturn",
+          )}
           value={formatPct(
             stats.spy_return_pct,
           )}
         />
 
         <CurveStat
-          label="最大回撤"
+          label={t(
+            "performance.maxDrawdown",
+          )}
           value={`${stats.max_dd_pct}%`}
           tone="red"
         />
+      </div>
+
+      {/* Rebalance log */}
+      <div className="border-t border-white/[0.08] px-6 py-5">
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() =>
+              setShowRebalanceLog(
+                (current) => !current,
+              )
+            }
+            className="cursor-pointer rounded-md border border-white/[0.12] px-4 py-2 font-mono text-xs text-[#697386] transition hover:border-[#E4BC7A] hover:text-[#E4BC7A]"
+          >
+            {showRebalanceLog
+              ? t("performance.hideRebalances")
+              : t("performance.recentRebalances")}
+          </button>
+        </div>
+
+        {showRebalanceLog && (
+          <div className="mt-5 border-t border-white/[0.08] pt-5">
+            {logs.map((log) => (
+              <RebalanceLog
+                key={`${log.quarter}-${log.date}`}
+                log={log}
+                buyLabel={t(
+                  "performance.buy",
+                )}
+                sellLabel={t(
+                  "performance.sell",
+                )}
+                summary={t(
+                  "performance.rebalanceSummary",
+                  {
+                    buys: log.n_buys,
+                    sells: log.n_sells,
+                    held: log.n_held,
+                  },
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -235,7 +319,7 @@ function ModeButton({
       type="button"
       onClick={onClick}
       className={[
-        "rounded-md border px-4 py-2 font-mono text-xs transition",
+        "cursor-pointer rounded-md border px-4 py-2 font-mono text-xs transition",
         active
           ? "border-[#E4BC7A] bg-[#E4BC7A] text-[#0B0F1A]"
           : "border-white/[0.12] text-[#697386] hover:border-white/[0.22] hover:text-[#EDEAE1]",
@@ -317,6 +401,93 @@ function CurveStat({
   );
 }
 
+type RebalanceLogProps = {
+  log: RebalanceLogItem;
+  buyLabel: string;
+  sellLabel: string;
+  summary: string;
+};
+
+function RebalanceLog({
+  log,
+  buyLabel,
+  sellLabel,
+  summary,
+}: RebalanceLogProps) {
+  return (
+    <div className="mb-6 last:mb-0">
+      {/* Quarter header */}
+      <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+        <h3 className="font-serif text-lg font-semibold text-[#EDEAE1]">
+          {log.quarter}
+        </h3>
+
+        <p className="font-mono text-xs text-[#5A6178]">
+          {log.date} · {summary}
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div className="flex flex-wrap gap-2">
+        {log.actions.map(
+          (action, index) => (
+            <RebalanceActionChip
+              key={`${log.quarter}-${action.symbol}-${action.type}-${index}`}
+              action={action}
+              label={
+                action.type === "buy"
+                  ? buyLabel
+                  : sellLabel
+              }
+            />
+          ),
+        )}
+      </div>
+
+      {/* Held note */}
+      {log.held_note && (
+        <p className="mt-3 text-xs leading-6 text-[#5A6178]">
+          ℹ️ {log.held_note}
+        </p>
+      )}
+    </div>
+  );
+}
+
+type RebalanceActionChipProps = {
+  action: RebalanceAction;
+  label: string;
+};
+
+function RebalanceActionChip({
+  action,
+  label,
+}: RebalanceActionChipProps) {
+  const isBuy =
+    action.type === "buy";
+
+  return (
+    <div
+      className={[
+        "flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs",
+        isBuy
+          ? "border-[#7FA37A]/30 bg-[#7FA37A]/10 text-[#7FA37A]"
+          : "border-[#C1614F]/30 bg-[#C1614F]/10 text-[#C1614F]",
+      ].join(" ")}
+    >
+      <span>{label}</span>
+
+      <span className="font-semibold text-[#E4BC7A]">
+        {action.symbol}
+      </span>
+
+      <span>
+        {action.detail}
+      </span>
+    </div>
+  );
+}
+
 type TooltipPayloadItem = {
   dataKey?: string;
   value?: number;
@@ -326,12 +497,16 @@ type CurveTooltipProps = {
   active?: boolean;
   label?: string;
   payload?: TooltipPayloadItem[];
+  strategyLabel: string;
+  spyLabel: string;
 };
 
 function CurveTooltip({
   active,
   label,
   payload,
+  strategyLabel,
+  spyLabel,
 }: CurveTooltipProps) {
   if (!active || !payload?.length) {
     return null;
@@ -343,7 +518,8 @@ function CurveTooltip({
   );
 
   const spy = payload.find(
-    (item) => item.dataKey === "spy",
+    (item) =>
+      item.dataKey === "spy",
   );
 
   return (
@@ -354,7 +530,7 @@ function CurveTooltip({
 
       {strategy?.value != null && (
         <p className="font-mono text-xs text-[#E4BC7A]">
-          策略{" "}
+          {strategyLabel}{" "}
           {formatMoneyDetailed(
             strategy.value,
           )}
@@ -363,7 +539,7 @@ function CurveTooltip({
 
       {spy?.value != null && (
         <p className="mt-1 font-mono text-xs text-[#4FA9A0]">
-          SPY{" "}
+          {spyLabel}{" "}
           {formatMoneyDetailed(
             spy.value,
           )}

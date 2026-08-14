@@ -173,7 +173,7 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="mt-9 flex w-full items-center justify-center gap-3 rounded-md border border-white/[0.12] bg-white/[0.025] px-4 py-3.5 text-sm font-medium text-[#D8D6CF] transition hover:border-white/[0.2] hover:bg-white/[0.045] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-9 flex w-full items-center justify-center gap-3 rounded-md border border-white/[0.12] bg-white/[0.025] px-4 py-3.5 cursor-pointer text-sm font-medium text-[#D8D6CF] transition hover:border-white/[0.2] hover:bg-white/[0.045] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <GoogleIcon />
 
@@ -254,7 +254,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-md bg-[#C9A15C] px-4 py-3.5 text-sm font-semibold text-[#0B0F1A] transition hover:bg-[#D8B36F] disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-md bg-[#C9A15C] px-4 py-3.5 text-sm cursor-pointer font-semibold text-[#0B0F1A] transition hover:bg-[#D8B36F] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading
                   ? t("signingIn")

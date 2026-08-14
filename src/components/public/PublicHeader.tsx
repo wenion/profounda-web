@@ -38,6 +38,13 @@ export function PublicHeader() {
           </Link>
 
           <Link
+            href="/#holdings"
+            className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
+          >
+            {t("holdings")}
+          </Link>
+
+          <Link
             href="/#community"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >

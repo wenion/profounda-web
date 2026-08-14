@@ -26,12 +26,42 @@
     "performance": {
       "eyebrow": "Performance",
       "title": "Performance",
-      "placeholder": "Performance chart will be displayed here"
+      "placeholder": "Performance curve will be displayed here",
+      "note": "Strategy backtest from Sep 2006 to Jul 2026, with the live account since Jan 2026 compared against SPY buy-and-hold.",
+      "backtest": "20-Year Backtest",
+      "live": "Live (2026 YTD)",
+      "strategy": "Strategy",
+      "spyBuyHold": "SPY Buy & Hold",
+      "initialToCurrent": "Initial → Current",
+      "totalReturn": "Total Return",
+      "spyReturn": "SPY Return",
+      "maxDrawdown": "Max Drawdown",
+      "recentRebalances": "📋 View Last Two Quarterly Rebalances",
+      "hideRebalances": "Hide Rebalance History",
+      "buy": "Buy",
+      "sell": "Sell",
+      "rebalanceSummary": "New buys {buys} / Sells {sells} / Continued holdings {held}"
     },
-
+    "holdings": {
+      "eyebrow": "Portfolio",
+      "title": "Holdings",
+      "note": "Current live account holdings, cost basis, market value, and unrealized returns.",
+      "totalEquity": "Total Equity",
+      "stockCash": "Stocks / Cash",
+      "regime": "Current Regime",
+      "symbol": "Symbol",
+      "shares": "Shares",
+      "costPrice": "Cost Price",
+      "currentPrice": "Current Price",
+      "marketValue": "Market Value",
+      "weight": "Weight",
+      "pnl": "P&L"
+    },
     "community": {
       "eyebrow": "Community",
-      "title": "Community"
+      "title": "Community",
+      "comingSoon": "Coming Soon",
+      "description": "Connect with other investors following the same signals, share insights, and review quarterly rebalancing decisions together."
     }
   },
   "Login": {
@@ -95,6 +125,7 @@
   },
   "PublicNavigation": {
     "performance": "Performance",
+    "holdings": "Holdings",
     "community": "Community",
     "login": "Sign in",
     "getStarted": "Get started"
@@ -110,7 +141,91 @@
     "portfolio": "Portfolio",
     "rebalance": "Rebalance",
     "account": "Account",
-    "billing": "Billing",
-    "logout": "Sign out"
+    "billing": "Subscription"
+  },
+
+  "AppHeader": {
+    "account": "Account",
+    "logout": "Sign Out"
+  },
+  "Dashboard": {
+    "eyebrow": "Overview",
+    "title": "Overview",
+    "description": "View your portfolio, market regime, and latest rebalance recommendations.",
+    "updatedAt": "Updated {date}",
+
+    "metrics": {
+      "totalValue": "Total Account Value",
+      "currentPortfolio": "Current portfolio",
+      "stockValue": "Stock Value",
+      "cash": "Cash",
+      "accountAllocation": "{percentage}% of account assets",
+      "marketRegime": "Current Market Regime",
+      "targetStockAllocation": "Current target stock allocation: {percentage}%"
+    },
+
+    "holdings": {
+      "title": "Current Holdings",
+      "description": "Sorted by current portfolio weight",
+      "viewAll": "View All",
+      "weight": "Weight",
+      "pnl": "P&L"
+    },
+
+    "rebalance": {
+      "title": "Latest Rebalance",
+      "description": "Based on the latest target portfolio",
+      "openAssistant": "Open Rebalance Assistant",
+      "actions": {
+        "newBuy": "New Position",
+        "increase": "Increase",
+        "decrease": "Reduce"
+      }
+    },
+
+    "allocation": {
+      "title": "Asset Allocation",
+      "description": "Current stock and cash allocation",
+      "stocks": "Stocks",
+      "cash": "Cash"
+    }
+  },
+  "Rebalance": {
+    "eyebrow": "Rebalancing Assistant",
+    "title": "Rebalancing Assistant",
+    "description": "Calculate what to buy, sell, and how much based on the current quarter's target portfolio.",
+    "intro": "Enter your current holdings, cost basis, number of shares, and remaining cash. The system will calculate the adjustments needed to align your portfolio with the current target allocation. Fractional shares are supported.",
+
+    "form": {
+      "ticker": "Ticker",
+      "costPrice": "Cost Price",
+      "shares": "Shares",
+      "cash": "Remaining Cash ($)",
+      "addHolding": "Add Holding",
+      "remove": "Remove Holding",
+      "calculate": "Calculate Recommendations"
+    },
+
+    "results": {
+      "title": "Recommended Rebalancing Actions",
+      "totalValue": "Current Account Value",
+      "ticker": "Ticker",
+      "action": "Action",
+      "currentShares": "Current Shares",
+      "targetShares": "Target Shares",
+      "change": "Recommended Change",
+      "currentPrice": "Current Price",
+      "stopLoss": "Stop Loss",
+      "note": "The stop-loss price is estimated using the current quarter's published risk-management rule (approximately -15%). Holdings that are no longer in the target portfolio are recommended for liquidation. This does not indicate a bearish view; it only means the current consensus signal has shifted to other securities. For informational purposes only and not investment advice."
+    },
+
+    "actions": {
+      "new": "New Buy",
+      "buy": "Add",
+      "trim": "Trim",
+      "sell": "Exit",
+      "stop": "Stop Loss",
+      "hold": "Hold"
+    }
   }
 }

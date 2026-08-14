@@ -1,5 +1,7 @@
 "use client";
 
+import { Community } from "@/components/public/Community";
+import { HoldingsTable } from "@/components/public/HoldingsTable";
 import { PerformanceChart } from "@/components/public/PerformanceChart";
 
 import { useTranslations } from "next-intl";
@@ -89,9 +91,26 @@ export default function HomePage() {
           <SectionHeader
             eyebrow={t("performance.eyebrow")}
             title={t("performance.title")}
+            note={t("performance.note")}
           />
 
           <PerformanceChart />
+        </div>
+      </section>
+
+      {/* Holdings */}
+      <section
+        id="holdings"
+        className="scroll-mt-16 border-t border-white/[0.08]"
+      >
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
+          <SectionHeader
+            eyebrow={t("holdings.eyebrow")}
+            title={t("holdings.title")}
+            note={t("holdings.note")}
+          />
+
+          <HoldingsTable />
         </div>
       </section>
 
@@ -106,7 +125,7 @@ export default function HomePage() {
             title={t("community.title")}
           />
 
-          <div className="mt-12 min-h-[300px] rounded-xl border border-white/[0.08] bg-[#0B0F1A]" />
+          <Community />
         </div>
       </section>
     </main>
@@ -161,21 +180,31 @@ function Metric({
 type SectionHeaderProps = {
   eyebrow: string;
   title: string;
+  note?: string;
 };
 
 function SectionHeader({
   eyebrow,
   title,
+  note,
 }: SectionHeaderProps) {
   return (
-    <div>
-      <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#C9A15C]">
-        {eyebrow}
-      </p>
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#C9A15C]">
+          {eyebrow}
+        </p>
 
-      <h2 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-[#EDEAE1]">
-        {title}
-      </h2>
+        <h2 className="mt-3 font-serif text-4xl font-semibold tracking-tight text-[#EDEAE1]">
+          {title}
+        </h2>
+      </div>
+
+      {note && (
+        <p className="max-w-xl text-sm leading-6 text-[#697386] sm:text-right">
+          {note}
+        </p>
+      )}
     </div>
   );
 }

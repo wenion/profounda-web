@@ -1,0 +1,14 @@
+{
+  "as_of": "2026-07-31",
+  "cash": 15763.35,
+  "cash_pct": 33.89,
+  "total_equity": 46516.69,
+  "holdings": [
+    {"symbol": "SYRE", "shares": 72.0, "cost_price": 69.9, "current_price": 98.33, "market_value": 7079.76, "pnl_pct": 40.67, "weight_pct": 15.22},
+    {"symbol": "MU", "shares": 8.0, "cost_price": 434.28, "current_price": 823.03, "market_value": 6584.24, "pnl_pct": 89.52, "weight_pct": 14.15},
+    {"symbol": "SNDK", "shares": 5.0, "cost_price": 964.02, "current_price": 1214.83, "market_value": 6074.15, "pnl_pct": 26.02, "weight_pct": 13.06},
+    {"symbol": "RLAY", "shares": 240.0, "cost_price": 12.59, "current_price": 18.83, "market_value": 4519.2, "pnl_pct": 49.56, "weight_pct": 9.72},
+    {"symbol": "STM", "shares": 69.0, "cost_price": 47.7, "current_price": 52.39, "market_value": 3614.91, "pnl_pct": 9.83, "weight_pct": 7.77},
+    {"symbol": "DVA", "shares": 12.0, "cost_price": 193.67, "current_price": 240.09, "market_value": 2881.08, "pnl_pct": 23.97, "weight_pct": 6.19}
+  ]
+}

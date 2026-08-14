@@ -1,12 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
 import { useAuth } from "@/contexts/AuthContext";
+import {
+  usePathname,
+  useRouter,
+} from "@/i18n/navigation";
 import { authService } from "@/services/authService";
 
 export function AppHeader() {
+  const t = useTranslations("AppHeader");
+
+  const locale = useLocale();
+
   const router = useRouter();
+  const pathname = usePathname();
+
   const { user } = useAuth();
 
   async function handleLogout() {
@@ -15,16 +25,26 @@ export function AppHeader() {
     router.replace("/login");
   }
 
+  function handleLocaleChange() {
+    const nextLocale =
+      locale === "zh" ? "en" : "zh";
+
+    router.replace(pathname, {
+      locale: nextLocale,
+    });
+  }
+
   const displayName =
     user?.displayName ||
     user?.email ||
-    "Account";
+    t("account");
 
   const initial =
     displayName.charAt(0).toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/10 bg-[#0B0F1A]/90 px-6 backdrop-blur lg:px-10">
+      {/* Mobile logo */}
       <div className="md:hidden">
         <span className="font-serif text-lg font-semibold">
           Pro
@@ -38,15 +58,20 @@ export function AppHeader() {
       <div className="hidden md:block" />
 
       <div className="flex items-center gap-5">
+        {/* Locale switch */}
         <button
           type="button"
-          className="text-xs text-[#8B92A6] transition hover:text-[#EDEAE1]"
+          onClick={handleLocaleChange}
+          className="cursor-pointer text-xs text-[#8B92A6] transition hover:text-[#EDEAE1]"
         >
-          中文 / EN
+          {locale === "zh"
+            ? "中文 / EN"
+            : "中文 / EN"}
         </button>
 
         <div className="h-5 w-px bg-white/10" />
 
+        {/* User */}
         <div className="flex items-center gap-3">
           {user?.photoURL ? (
             <img
@@ -68,9 +93,9 @@ export function AppHeader() {
             <button
               type="button"
               onClick={handleLogout}
-              className="text-xs text-[#5A6178] transition hover:text-[#E4BC7A]"
+              className="cursor-pointer text-xs text-[#5A6178] transition hover:text-[#E4BC7A]"
             >
-              退出登录
+              {t("logout")}
             </button>
           </div>
         </div>
