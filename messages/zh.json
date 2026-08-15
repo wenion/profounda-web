@@ -11,7 +11,11 @@
 
   "Home": {
     "eyebrow": "顶级机构 · 实时追踪 13F 持仓",
-    "headline": "当顶级基金经理悄悄买入同一件事，这不该是秘密。",
+    "headline": {
+      "line1": "当顶级基金经理",
+      "line2": "悄悄买入同一件事，",
+      "line3": "这不该是秘密。"
+    },
     "description": "Profounda 持续追踪巴菲特、Ackman、Klarman 等顶级机构的 SEC 13F 披露，通过系统建模与信号提取，把分散在上万条持仓记录里的共识，变成一份可执行的信号。",
 
     "nextRebalance": "下次重大调仓日期",
@@ -41,23 +45,27 @@
       "hideRebalances": "收起调仓记录",
       "buy": "买入",
       "sell": "卖出",
-      "rebalanceSummary": "新买 {buys} / 卖出 {sells} / 延续持有 {held}"
+      "rebalanceSummary": "新买 {buys} / 卖出 {sells} / 延续持有 {held}",
+      "loginToViewHoldings": "注册或登录后查看全部持仓及盈亏情况",
+      "login": "登录查看"
     },
 
     "holdings": {
-      "eyebrow": "Portfolio",
-      "title": "持仓总览",
-      "note": "实盘账户当前实际持有的股票、成本价与浮动盈亏。",
-      "totalEquity": "账户总值",
+      "eyebrow": "Holdings",
+      "title": "Profounda 持仓",
+      "note": "追踪当前策略持仓、配置比例与实时盈亏情况。",
+      "totalEquity": "总资产",
       "stockCash": "股票 / 现金",
-      "regime": "当前状态",
+      "regime": "市场状态",
       "symbol": "代码",
       "shares": "股数",
       "costPrice": "成本价",
       "currentPrice": "现价",
       "marketValue": "市值",
       "weight": "权重",
-      "pnl": "盈亏"
+      "pnl": "盈亏",
+      "loginToViewAll": "注册或登录后查看全部持仓及盈亏情况",
+      "loginToView": "登录查看"
     },
 
     "community": {
@@ -106,6 +114,7 @@
     "name": "姓名",
     "email": "邮箱",
     "password": "密码",
+    "confirmPassword": "确认密码",
     "passwordHint": "至少 6 个字符",
     "createAccount": "创建账户",
     "creating": "正在创建账户...",
@@ -124,16 +133,83 @@
 
     "errors": {
       "signup": "无法创建账户，请检查填写的信息后重试。",
-      "google": "无法使用 Google 继续，请重试。"
+      "google": "无法使用 Google 继续，请重试。",
+      "passwordMismatch": "两次输入的密码不一致"
+    }
+  },
+  "Analysis": {
+    "eyebrow": "Exclusive Analysis",
+    "title": "独家分析",
+    "description": "根据 Profounda 最新信号分析你的当前持仓，并生成具体的买入、卖出、加仓、减仓与止损建议。",
+    "intro": "填入你目前实际持有的股票、成本价、股数以及剩余现金，系统将根据最新目标组合计算具体的调整方案，支持小数股。",
+
+    "loginToViewAll": "注册或登录后查看完整分析结果",
+    "loginToView": "登录查看",
+
+    "form": {
+      "ticker": "股票代码",
+      "costPrice": "成本价",
+      "shares": "股数",
+      "cash": "剩余现金 ($)",
+      "addHolding": "添加一行持仓",
+      "remove": "删除持仓",
+      "calculate": "生成分析结果"
+    },
+
+    "results": {
+      "title": "投资组合分析",
+      "totalValue": "当前账户总值",
+      "ticker": "代码",
+      "action": "建议操作",
+      "currentShares": "现有股数",
+      "targetShares": "目标股数",
+      "change": "建议变化",
+      "currentPrice": "现价",
+      "stopLoss": "止损价",
+      "note": "止损价按当前风控规则估算（约 -15%）。不在当前目标名单中的持仓可能建议清仓，这不代表看空该股票，而是当前共识信号已转向其他标的。分析结果仅供研究和信息参考，不构成投资建议。"
+    },
+
+    "actions": {
+      "new": "新买入",
+      "buy": "加仓",
+      "trim": "减仓",
+      "sell": "清仓",
+      "stop": "止损",
+      "hold": "维持"
     }
   },
 
+  "Subscription": {
+    "eyebrow": "Signal Subscription",
+    "title": "信号订阅",
+    "description": "订阅 Profounda 信号邮件，大约每两周收到一次最新投资信号与组合变化。",
+
+    "delivery": "通过邮箱发送",
+    "frequency": "约每两周更新",
+
+    "includes": {
+      "title": "你将收到",
+      "buy": "最新买入信号",
+      "sell": "最新卖出信号",
+      "stopLoss": "止损与风险控制信号",
+      "portfolio": "最新持仓与组合调整"
+    },
+
+    "cta": "获取订阅",
+    "checking": "正在检查订阅状态...",
+    "subscribing": "正在订阅...",
+    "subscribed": "已订阅",
+    "unsubscribe": "取消订阅",
+    "unsubscribing": "正在取消...",
+    "loginRequired": "登录后即可订阅信号邮件"
+  },
+
   "PublicNavigation": {
-    "performance": "业绩",
-    "holdings": "持仓总览",
-    "community": "社区",
-    "login": "登录",
-    "getStarted": "免费开始"
+    "home": "主页",
+    "analysis": "独家分析",
+    "subscription": "信号订阅",
+    "language": "中文/EN",
+    "logout": "退出登录"
   },
 
   "PublicFooter": {

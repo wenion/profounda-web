@@ -17,38 +17,51 @@ export default function HomePage() {
         <div className="pointer-events-none absolute left-1/2 top-0 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-[#C9A15C]/[0.035] blur-[120px]" />
 
         <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-24 lg:px-8 lg:pb-24 lg:pt-32">
-          <div className="mx-auto max-w-5xl text-center">
+          {/* Hero */}
+          <div className="text-left">
             {/* Eyebrow */}
             <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#C9A15C]">
               {t("eyebrow")}
             </p>
 
             {/* Headline */}
-            <h1 className="mx-auto mt-7 max-w-5xl font-serif text-5xl font-semibold leading-[1.12] tracking-tight text-[#EDEAE1] sm:text-6xl lg:text-7xl">
-              {t("headline")}
+            <h1 className="mt-7 text-[48px] font-semibold leading-[1.3] tracking-tight text-[#EDEAE1]">
+              <span className="block">
+                {t("headline.line1")}
+              </span>
+
+              <span className="block">
+                {t("headline.line2")}
+              </span>
+
+              <span className="block">
+                {t("headline.line3")}
+              </span>
             </h1>
 
             {/* Description */}
-            <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-[#8B92A6] sm:text-lg">
+            <p className="mt-8 max-w-3xl text-base leading-8 text-[#8B92A6] sm:text-lg">
               {t("description")}
             </p>
 
             {/* Next rebalance */}
-            <div className="mt-10 inline-flex items-center gap-4 rounded-full border border-[#C9A15C]/20 bg-[#C9A15C]/[0.06] px-5 py-2.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C9A15C]" />
+            <div className="mt-10 flex justify-start">
+              <div className="inline-flex items-center gap-4 rounded-full border border-[#C9A15C]/20 bg-[#C9A15C]/[0.06] px-5 py-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A15C]" />
 
-              <span className="text-xs text-[#8B92A6]">
-                {t("nextRebalance")}
-              </span>
+                <span className="text-xs text-[#8B92A6]">
+                  {t("nextRebalance")}
+                </span>
 
-              <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                2026-08-15
-              </span>
+                <span className="font-mono text-xs font-medium text-[#E4BC7A]">
+                  2026-08-15
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Metrics */}
-          <div className="grid grid-cols-2 md:grid-cols-5">
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-5">
             <Metric
               label={t("metrics.cagr")}
               value="25.92%"
@@ -115,7 +128,7 @@ export default function HomePage() {
       </section>
 
       {/* Community */}
-      <section
+      {/* <section
         id="community"
         className="scroll-mt-16 border-t border-white/[0.08] bg-white/[0.012]"
       >
@@ -127,7 +140,7 @@ export default function HomePage() {
 
           <Community />
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import type { ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 
+import { useRouter } from "@/i18n/navigation";
 import { AppShell } from "@/components/app/AppShell";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -15,13 +17,29 @@ export default function ProtectedLayout({
   children,
 }: ProtectedLayoutProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
+
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login");
+    if (loading || user) {
+      return;
     }
-  }, [user, loading, router]);
+
+    const redirect = encodeURIComponent(pathname);
+
+    router.replace(
+      `/login?redirect=${redirect}`,
+      { locale },
+    );
+  }, [
+    user,
+    loading,
+    pathname,
+    locale,
+    router,
+  ]);
 
   if (loading) {
     return (
@@ -37,9 +55,5 @@ export default function ProtectedLayout({
     return null;
   }
 
-  return (
-    <AppShell>
-      {children}
-    </AppShell>
-  );
+  return <AppShell>{children}</AppShell>;
 }

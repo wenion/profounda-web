@@ -1,17 +1,32 @@
 "use client";
 
+"use client";
+
 import {
   useLocale,
   useTranslations,
 } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { authService } from "@/services/authService";
 
 export function PublicHeader() {
   const locale = useLocale();
-  const t = useTranslations(
-    "PublicNavigation",
-  );
+  const t = useTranslations("PublicNavigation");
+  const { user, loading } = useAuth();
+
+  const displayName =
+    user?.displayName ||
+    user?.email ||
+    "";
+
+  const initial =
+    displayName.charAt(0).toUpperCase();
+
+  const handleLogout = async () => {
+    await authService.signOut();
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#0B0F1A]/95 backdrop-blur">
@@ -31,24 +46,24 @@ export function PublicHeader() {
         {/* Desktop navigation */}
         <nav className="flex items-center gap-5 sm:gap-6">
           <Link
-            href="/#performance"
+            href="/"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("performance")}
+            {t("home")}
           </Link>
 
           <Link
-            href="/#holdings"
+            href="/analysis"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("holdings")}
+            {t("analysis")}
           </Link>
 
           <Link
-            href="/#community"
+            href="/subscription"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("community")}
+            {t("subscription")}
           </Link>
 
           <div className="hidden h-4 w-px bg-white/10 md:block" />
@@ -84,22 +99,40 @@ export function PublicHeader() {
             </Link>
           </div>
 
-          <div className="hidden h-4 w-px bg-white/10 sm:block" />
+          {/* Logged-in user */}
+          {!loading && user && (
+            <>
+              <div className="hidden h-6 w-px bg-white/10 sm:block" />
 
-          {/* Auth */}
-          <Link
-            href="/login"
-            className="text-sm font-medium text-[#A8AEBE] transition hover:text-[#EDEAE1]"
-          >
-            {t("login")}
-          </Link>
+              <div className="flex items-center gap-3">
+                {user.photoURL ? (
+                  <img
+                    src={user.photoURL}
+                    alt=""
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#C9A15C]/15 text-xs font-semibold text-[#E4BC7A]">
+                    {initial}
+                  </div>
+                )}
 
-          <Link
-            href="/signup"
-            className="rounded-lg bg-[#C9A15C] px-4 py-2 text-sm font-semibold text-[#0B0F1A] transition hover:bg-[#E4BC7A]"
-          >
-            {t("getStarted")}
-          </Link>
+                <div className="hidden sm:block">
+                  <p className="max-w-40 truncate text-sm text-[#EDEAE1]">
+                    {displayName}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="cursor-pointer text-xs text-[#5A6178] transition hover:text-[#E4BC7A]"
+                  >
+                    {t("logout")}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </nav>
       </div>
     </header>

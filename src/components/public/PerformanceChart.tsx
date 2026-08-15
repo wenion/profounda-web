@@ -1,7 +1,9 @@
 "use client";
 
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   CartesianGrid,
   Line,
@@ -45,6 +47,7 @@ type RebalanceLogItem = {
 
 export function PerformanceChart() {
   const t = useTranslations("Home");
+  const { user, loading } = useAuth();
 
   const [mode, setMode] =
     useState<PerformanceMode>("backtest");
@@ -280,12 +283,9 @@ export function PerformanceChart() {
               <RebalanceLog
                 key={`${log.quarter}-${log.date}`}
                 log={log}
-                buyLabel={t(
-                  "performance.buy",
-                )}
-                sellLabel={t(
-                  "performance.sell",
-                )}
+                isAuthenticated={!loading && !!user}
+                buyLabel={t("performance.buy")}
+                sellLabel={t("performance.sell")}
                 summary={t(
                   "performance.rebalanceSummary",
                   {
@@ -294,6 +294,10 @@ export function PerformanceChart() {
                     held: log.n_held,
                   },
                 )}
+                loginPrompt={t(
+                  "performance.loginToViewHoldings",
+                )}
+                loginLabel={t("performance.login")}
               />
             ))}
           </div>
@@ -406,6 +410,9 @@ type RebalanceLogProps = {
   buyLabel: string;
   sellLabel: string;
   summary: string;
+  isAuthenticated: boolean;
+  loginPrompt: string;
+  loginLabel: string;
 };
 
 function RebalanceLog({
@@ -413,7 +420,17 @@ function RebalanceLog({
   buyLabel,
   sellLabel,
   summary,
+  isAuthenticated,
+  loginPrompt,
+  loginLabel,
 }: RebalanceLogProps) {
+  const visibleActions = isAuthenticated
+    ? log.actions
+    : log.actions.slice(0, 2);
+
+  const hasHiddenActions =
+    !isAuthenticated && log.actions.length > 2;
+
   return (
     <div className="mb-6 last:mb-0">
       {/* Quarter header */}
@@ -427,9 +444,9 @@ function RebalanceLog({
         </p>
       </div>
 
-      {/* Actions */}
+      {/* Visible actions */}
       <div className="flex flex-wrap gap-2">
-        {log.actions.map(
+        {visibleActions.map(
           (action, index) => (
             <RebalanceActionChip
               key={`${log.quarter}-${action.symbol}-${action.type}-${index}`}
@@ -444,8 +461,41 @@ function RebalanceLog({
         )}
       </div>
 
+      {/* Locked actions */}
+      {hasHiddenActions && (
+        <div className="relative mt-2 overflow-hidden rounded-lg">
+          {/* Fake blurred holdings */}
+          <div
+            className="pointer-events-none flex flex-wrap gap-2 select-none blur-[5px] opacity-40"
+            aria-hidden="true"
+          >
+            <div className="h-8 w-32 rounded-md bg-white/10" />
+            <div className="h-8 w-40 rounded-md bg-white/10" />
+            <div className="h-8 w-28 rounded-md bg-white/10" />
+            <div className="h-8 w-36 rounded-md bg-white/10" />
+          </div>
+
+          <div className="mt-4 flex items-center gap-3 rounded-lg border border-[#C9A15C]/15 bg-[#C9A15C]/[0.04] px-4 py-3">
+            <span className="text-sm">
+              🔒
+            </span>
+
+            <p className="flex-1 text-xs text-[#8B92A6]">
+              {loginPrompt}
+            </p>
+
+            <Link
+              href="/login?redirect=/"
+              className="shrink-0 text-xs font-medium text-[#E4BC7A] transition hover:text-[#F0CC8E]"
+            >
+              {loginLabel}
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Held note */}
-      {log.held_note && (
+      {isAuthenticated && log.held_note && (
         <p className="mt-3 text-xs leading-6 text-[#5A6178]">
           ℹ️ {log.held_note}
         </p>

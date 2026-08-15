@@ -10,7 +10,11 @@
   },
   "Home": {
     "eyebrow": "Leading Institutions · Real-Time 13F Tracking",
-    "headline": "When top fund managers quietly buy the same thing, it shouldn't be a secret.",
+    "headline": {
+      "line1": "When the world's best investors",
+      "line2": "quietly buy the same thing,",
+      "line3": "it shouldn't be a secret."
+    },
     "description": "Profounda continuously tracks SEC 13F filings from leading institutions including Buffett, Ackman and Klarman. Through systematic modeling and signal extraction, we turn consensus hidden across tens of thousands of holdings into actionable signals.",
 
     "nextRebalance": "Next major rebalance",
@@ -40,7 +44,9 @@
       "hideRebalances": "Hide Rebalance History",
       "buy": "Buy",
       "sell": "Sell",
-      "rebalanceSummary": "New buys {buys} / Sells {sells} / Continued holdings {held}"
+      "rebalanceSummary": "New buys {buys} / Sells {sells} / Continued holdings {held}",
+      "loginToViewHoldings": "Sign up or log in to view all holdings and performance",
+      "login": "Log in to view"
     },
     "holdings": {
       "eyebrow": "Portfolio",
@@ -55,7 +61,9 @@
       "currentPrice": "Current Price",
       "marketValue": "Market Value",
       "weight": "Weight",
-      "pnl": "P&L"
+      "pnl": "P&L",
+      "loginToViewAll": "Sign up or log in to view all holdings and performance",
+      "loginToView": "Log in to view"
     },
     "community": {
       "eyebrow": "Community",
@@ -102,6 +110,7 @@
     "name": "Name",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm password",
     "passwordHint": "At least 6 characters",
     "createAccount": "Create account",
     "creating": "Creating account...",
@@ -120,15 +129,82 @@
 
     "errors": {
       "signup": "Unable to create your account. Please check your details and try again.",
-      "google": "Unable to continue with Google. Please try again."
+      "google": "Unable to continue with Google. Please try again.",
+      "passwordMismatch": "Passwords do not match"
     }
   },
+  "Analysis": {
+    "eyebrow": "Exclusive Analysis",
+    "title": "Exclusive Analysis",
+    "description": "Analyze your current portfolio against Profounda's latest signals and generate specific buy, sell, increase, reduce, and stop-loss recommendations.",
+    "intro": "Enter your current holdings, cost basis, number of shares, and remaining cash. The system will calculate the adjustments needed to align your portfolio with the latest target allocation. Fractional shares are supported.",
+
+    "loginToViewAll": "Sign up or log in to view the full analysis",
+    "loginToView": "Log in to view",
+
+    "form": {
+      "ticker": "Ticker",
+      "costPrice": "Cost Price",
+      "shares": "Shares",
+      "cash": "Remaining Cash ($)",
+      "addHolding": "Add Holding",
+      "remove": "Remove Holding",
+      "calculate": "Generate Analysis"
+    },
+
+    "results": {
+      "title": "Portfolio Analysis",
+      "totalValue": "Current Account Value",
+      "ticker": "Ticker",
+      "action": "Recommended Action",
+      "currentShares": "Current Shares",
+      "targetShares": "Target Shares",
+      "change": "Recommended Change",
+      "currentPrice": "Current Price",
+      "stopLoss": "Stop Loss",
+      "note": "The stop-loss price is estimated using the current risk-management rule (approximately -15%). Holdings that are not in the current target portfolio may be recommended for exit. This does not indicate a bearish view; it means the current consensus signal has shifted to other securities. The analysis is for research and informational purposes only and does not constitute investment advice."
+    },
+
+    "actions": {
+      "new": "New Buy",
+      "buy": "Add",
+      "trim": "Trim",
+      "sell": "Exit",
+      "stop": "Stop Loss",
+      "hold": "Hold"
+    }
+  },
+
+  "Subscription": {
+    "eyebrow": "Signal Subscription",
+    "title": "Signal Subscription",
+    "description": "Subscribe to Profounda's signal emails and receive the latest investment signals and portfolio changes approximately every two weeks.",
+
+    "delivery": "Delivered by email",
+    "frequency": "Updated approximately every two weeks",
+
+    "includes": {
+      "title": "What you'll receive",
+      "buy": "Latest buy signals",
+      "sell": "Latest sell signals",
+      "stopLoss": "Stop-loss and risk management signals",
+      "portfolio": "Latest holdings and portfolio changes"
+    },
+
+    "cta": "Get Subscription",
+    "checking": "Checking subscription...",
+    "subscribing": "Subscribing...",
+    "subscribed": "Subscribed",
+    "unsubscribe": "Unsubscribe",
+    "unsubscribing": "Unsubscribing...",
+    "loginRequired": "Sign in to subscribe to signal emails"
+  },
   "PublicNavigation": {
-    "performance": "Performance",
-    "holdings": "Holdings",
-    "community": "Community",
-    "login": "Sign in",
-    "getStarted": "Get started"
+    "home": "Home",
+    "analysis": "Exclusive Analysis",
+    "subscription": "Signal Subscription",
+    "language": "中文/EN",
+    "logout": "Sign Out"
   },
   "PublicFooter": {
     "description": "Tracking institutional 13F holdings and extracting consensus through systematic modeling and signal analysis.",

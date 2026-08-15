@@ -30,7 +30,7 @@ export function PublicFooter() {
           </div>
 
           {/* Links */}
-          <div className="flex gap-8 text-xs text-[#6F768A]">
+          {/* <div className="flex gap-8 text-xs text-[#6F768A]">
             <Link
               href="/#performance"
               className="transition hover:text-[#EDEAE1]"
@@ -44,7 +44,7 @@ export function PublicFooter() {
             >
               {t("community")}
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-10 border-t border-white/[0.06] pt-6">

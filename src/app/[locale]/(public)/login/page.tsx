@@ -2,6 +2,7 @@
 
 import type { ComponentProps } from "react";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
   useLocale,
@@ -20,9 +21,22 @@ export default function LoginPage() {
   const locale = useLocale();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
+  const redirectParam =
+    searchParams.get("redirect");
+
+  const redirect =
+    redirectParam?.startsWith("/") &&
+    !redirectParam.startsWith("//")
+      ? redirectParam
+      : "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] =
     useState("");
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] =
@@ -46,7 +60,7 @@ export default function LoginPage() {
           password,
         );
 
-        router.replace("/dashboard", {
+        router.replace(redirect, {
           locale,
         });
       } catch {
@@ -69,7 +83,7 @@ export default function LoginPage() {
     try {
       await authService.signInWithGoogle();
 
-      router.replace("/dashboard", {
+      router.replace(redirect, {
         locale,
       });
     } catch {
@@ -92,7 +106,7 @@ export default function LoginPage() {
         {/* Left */}
         <section className="hidden border-r border-white/[0.07] px-12 py-12 lg:flex lg:flex-col xl:px-20">
           {/* Brand */}
-          <Link
+          {/* <Link
             href="/"
             className="inline-flex w-fit items-center gap-3"
           >
@@ -101,7 +115,7 @@ export default function LoginPage() {
             <span className="font-serif text-xl font-semibold tracking-tight text-[#EDEAE1]">
               Profounda
             </span>
-          </Link>
+          </Link> */}
 
           {/* Hero */}
           <div className="my-auto max-w-lg">
@@ -223,21 +237,36 @@ export default function LoginPage() {
                   </button>
                 </div>
 
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(event) =>
-                    setPassword(
-                      event.target.value,
-                    )
-                  }
-                  placeholder="••••••••"
-                  className="w-full rounded-md border border-white/[0.1] bg-[#101521] px-4 py-3.5 text-sm text-[#EDEAE1] outline-none transition placeholder:text-[#3F4658] hover:border-white/[0.16] focus:border-[#C9A15C]/60 focus:ring-1 focus:ring-[#C9A15C]/20"
-                />
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(event) =>
+                      setPassword(event.target.value)
+                    }
+                    placeholder="••••••••"
+                    className="w-full rounded-md border border-white/[0.1] bg-[#101521] px-4 py-3.5 pr-12 text-sm text-[#EDEAE1] outline-none transition placeholder:text-[#3F4658] hover:border-white/[0.16] focus:border-[#C9A15C]/60 focus:ring-1 focus:ring-[#C9A15C]/20"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword((current) => !current)
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
+                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#697386] transition hover:text-[#E4BC7A]"
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
               </div>
 
               {error && (
@@ -266,7 +295,7 @@ export default function LoginPage() {
             <p className="mt-7 text-center text-sm text-[#697386]">
               {t("noAccount")}{" "}
               <Link
-                href="/signup"
+                href={`/signup?redirect=${encodeURIComponent(redirect)}`}
                 className="font-medium text-[#E4BC7A] transition hover:text-[#F0CC8E]"
               >
                 {t("createAccount")}
@@ -398,6 +427,46 @@ function GoogleIcon() {
         fill="#EA4335"
         d="M12 6.19c1.44 0 2.73.49 3.74 1.46l2.81-2.81A9.42 9.42 0 0 0 12 2.3a9.79 9.79 0 0 0-8.74 5.39l3.26 2.53C7.29 7.91 9.45 6.19 12 6.19Z"
       />
+    </svg>
+  );
+}
+
+function EyeIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function EyeOffIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m3 3 18 18" />
+      <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+      <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.1 3.2" />
+      <path d="M6.6 6.6C3.7 8.5 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4.1-.9" />
     </svg>
   );
 }

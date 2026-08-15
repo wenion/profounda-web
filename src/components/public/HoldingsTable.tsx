@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 
 import holdingsData from "@/data/performance/holdings.json";
 import signal from "@/data/performance/signal.json";
+import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 type Holding = {
   symbol: string;
@@ -17,6 +19,7 @@ type Holding = {
 
 export function HoldingsTable() {
   const t = useTranslations("Home.holdings");
+  const { user, loading } = useAuth();
 
   const holdings =
     holdingsData.holdings as Holding[];
@@ -25,6 +28,14 @@ export function HoldingsTable() {
     100 - holdingsData.cash_pct;
 
   const isBull = signal.regime === "BULL";
+
+  const isAuthenticated =
+    !loading && !!user;
+
+  const visibleHoldings =
+    isAuthenticated
+      ? holdings
+      : holdings.slice(0, 2);
 
   return (
     <div className="mt-12 overflow-hidden rounded-xl border border-white/[0.08] bg-[#101521]">
@@ -115,7 +126,8 @@ export function HoldingsTable() {
           </thead>
 
           <tbody>
-            {holdings.map((holding) => (
+            {/* Real visible holdings */}
+            {visibleHoldings.map((holding) => (
               <tr
                 key={holding.symbol}
                 className="border-b border-white/[0.08] last:border-b-0"
@@ -125,34 +137,23 @@ export function HoldingsTable() {
                 </td>
 
                 <TableNumber>
-                  {formatShares(
-                    holding.shares,
-                  )}
+                  {formatShares(holding.shares)}
                 </TableNumber>
 
                 <TableNumber>
-                  {formatPrice(
-                    holding.cost_price,
-                  )}
+                  {formatPrice(holding.cost_price)}
                 </TableNumber>
 
                 <TableNumber>
-                  {formatPrice(
-                    holding.current_price,
-                  )}
+                  {formatPrice(holding.current_price)}
                 </TableNumber>
 
                 <TableNumber>
-                  {formatMoney(
-                    holding.market_value,
-                  )}
+                  {formatMoney(holding.market_value)}
                 </TableNumber>
 
                 <TableNumber>
-                  {holding.weight_pct.toFixed(
-                    1,
-                  )}
-                  %
+                  {holding.weight_pct.toFixed(1)}%
                 </TableNumber>
 
                 <td
@@ -163,14 +164,58 @@ export function HoldingsTable() {
                       : "text-[#C1614F]",
                   ].join(" ")}
                 >
-                  {formatPct(
-                    holding.pnl_pct,
-                  )}
+                  {formatPct(holding.pnl_pct)}
                 </td>
               </tr>
             ))}
+
+            {/* Locked placeholder rows */}
+            {!loading &&
+              !isAuthenticated &&
+              holdings.length > 2 &&
+              [0, 1, 2].map((index) => (
+                <tr
+                  key={`locked-${index}`}
+                  aria-hidden="true"
+                  className="pointer-events-none border-b border-white/[0.08] select-none opacity-30 blur-[5px]"
+                >
+                  <td className="py-4 font-mono font-semibold text-[#E4BC7A]">
+                    XXXX
+                  </td>
+
+                  <TableNumber>1,234</TableNumber>
+                  <TableNumber>$123.45</TableNumber>
+                  <TableNumber>$156.78</TableNumber>
+                  <TableNumber>$12,345</TableNumber>
+                  <TableNumber>12.3%</TableNumber>
+
+                  <td className="py-4 text-right font-mono text-[#7FA37A]">
+                    +23.4%
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
+        {!loading &&
+          !isAuthenticated &&
+          holdings.length > 2 && (
+            <div className="mt-5 flex flex-col items-center justify-center gap-3 border-t border-white/[0.08] pt-5 sm:flex-row">
+              <span className="text-sm">
+                🔒
+              </span>
+
+              <p className="text-center text-xs text-[#8B92A6]">
+                {t("loginToViewAll")}
+              </p>
+
+              <Link
+                href="/login?redirect=/"
+                className="text-xs font-medium text-[#E4BC7A] transition hover:text-[#F0CC8E]"
+              >
+                {t("loginToView")}
+              </Link>
+            </div>
+          )}
       </div>
     </div>
   );
