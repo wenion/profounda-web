@@ -80,7 +80,11 @@
     "or": "or",
     "email": "Email",
     "password": "Password",
+
     "forgotPassword": "Forgot password?",
+    "sendingReset": "Sending...",
+    "resetPasswordSent": "Password reset email sent. Please check your inbox.",
+
     "signIn": "Sign in",
     "signingIn": "Signing in...",
     "noAccount": "Don't have an account?",
@@ -98,7 +102,10 @@
 
     "errors": {
       "invalidCredentials": "Unable to sign in. Please check your email and password.",
-      "google": "Unable to sign in with Google. Please try again."
+      "google": "Unable to sign in with Google. Please try again.",
+      "enterEmail": "Please enter your email address first.",
+      "invalidEmail": "Please enter a valid email address.",
+      "resetPassword": "Unable to send the password reset email. Please try again."
     }
   },
   "Signup": {
@@ -128,9 +135,12 @@
     },
 
     "errors": {
-      "signup": "Unable to create your account. Please check your details and try again.",
+      "signup": "Unable to create your account. Please try again.",
       "google": "Unable to continue with Google. Please try again.",
-      "passwordMismatch": "Passwords do not match"
+      "passwordMismatch": "Passwords do not match",
+      "emailExists": "An account with this email already exists. Please sign in.",
+      "invalidEmail": "Please enter a valid email address.",
+      "weakPassword": "Your password is too weak. Please choose a stronger password."
     }
   },
   "Analysis": {

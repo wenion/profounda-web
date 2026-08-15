@@ -181,61 +181,53 @@ export default function SubscriptionPage() {
 
         {/* Subscribe */}
         <div className="mt-10">
-          <div className="mt-10">
-            {checkingSubscription ? (
+          {checkingSubscription ? (
+            <button
+              type="button"
+              disabled
+              className="rounded-lg bg-[#C9A15C] px-6 py-3 text-sm font-semibold text-[#0B0F1A] opacity-60"
+            >
+              {t("checking")}
+            </button>
+          ) : subscribed ? (
+            <div className="flex items-center gap-4">
+              <span className="inline-flex items-center gap-2 rounded-lg border border-[#7FA37A]/30 bg-[#7FA37A]/10 px-6 py-3 text-sm font-medium text-[#7FA37A]">
+                ✓ {t("subscribed")}
+              </span>
+
               <button
                 type="button"
-                disabled
-                className="rounded-lg bg-[#C9A15C] px-6 py-3 text-sm font-semibold text-[#0B0F1A] opacity-60"
+                onClick={handleUnsubscribe}
+                disabled={subscribing}
+                className="cursor-pointer text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {t("checking")}
+                {subscribing
+                  ? t("unsubscribing")
+                  : t("unsubscribe")}
               </button>
-            ) : subscribed ? (
-              <div className="flex items-center gap-4">
-                <span className="inline-flex items-center gap-2 rounded-lg border border-[#7FA37A]/30 bg-[#7FA37A]/10 px-6 py-3 text-sm font-medium text-[#7FA37A]">
-                  ✓ {t("subscribed")}
-                </span>
+            </div>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={handleSubscribe}
+                disabled={
+                  loading ||
+                  subscribing
+                }
+                className="cursor-pointer rounded-lg bg-[#C9A15C] px-6 py-3 text-sm font-semibold text-[#0B0F1A] transition hover:bg-[#E4BC7A] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {subscribing
+                  ? t("subscribing")
+                  : t("cta")}
+              </button>
 
-                <button
-                  type="button"
-                  onClick={handleUnsubscribe}
-                  disabled={subscribing}
-                  className="cursor-pointer text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {subscribing
-                    ? t("unsubscribing")
-                    : t("unsubscribe")}
-                </button>
-              </div>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={handleSubscribe}
-                  disabled={
-                    loading ||
-                    subscribing
-                  }
-                  className="cursor-pointer rounded-lg bg-[#C9A15C] px-6 py-3 text-sm font-semibold text-[#0B0F1A] transition hover:bg-[#E4BC7A] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {subscribing
-                    ? t("subscribing")
-                    : t("cta")}
-                </button>
-
-                {!loading && !user && (
-                  <p className="mt-3 text-xs text-[#5A6178]">
-                    {t("loginRequired")}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-
-          {!loading && !user && (
-            <p className="mt-3 text-xs text-[#5A6178]">
-              {t("loginRequired")}
-            </p>
+              {!loading && !user && (
+                <p className="mt-3 text-xs text-[#5A6178]">
+                  {t("loginRequired")}
+                </p>
+              )}
+            </>
           )}
         </div>
       </section>

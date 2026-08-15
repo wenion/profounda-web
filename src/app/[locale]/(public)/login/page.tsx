@@ -8,6 +8,7 @@ import {
   useLocale,
   useTranslations,
 } from "next-intl";
+import { FirebaseError } from "firebase/app";
 
 import {
   Link,
@@ -37,6 +38,12 @@ export default function LoginPage() {
     useState("");
   const [showPassword, setShowPassword] =
     useState(false);
+
+  const [resettingPassword, setResettingPassword] =
+    useState(false);
+
+  const [resetMessage, setResetMessage] =
+    useState("");
 
   const [error, setError] = useState("");
   const [loading, setLoading] =
@@ -92,6 +99,53 @@ export default function LoginPage() {
       setLoading(false);
     }
   }
+
+  const handleForgotPassword = async () => {
+    if (resettingPassword) {
+      return;
+    }
+
+    setError("");
+    setResetMessage("");
+
+    if (!email.trim()) {
+      setError(t("errors.enterEmail"));
+      return;
+    }
+
+    setResettingPassword(true);
+
+    try {
+      await authService.resetPassword(
+        email.trim(),
+      );
+
+      setResetMessage(
+        t("resetPasswordSent"),
+      );
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-email":
+            setError(
+              t("errors.invalidEmail"),
+            );
+            break;
+
+          default:
+            setError(
+              t("errors.resetPassword"),
+            );
+        }
+      } else {
+        setError(
+          t("errors.resetPassword"),
+        );
+      }
+    } finally {
+      setResettingPassword(false);
+    }
+  };
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#0B0F1A]">
@@ -231,11 +285,23 @@ export default function LoginPage() {
 
                   <button
                     type="button"
-                    className="text-xs text-[#C9A15C] transition hover:text-[#E4BC7A]"
+                    onClick={handleForgotPassword}
+                    disabled={resettingPassword}
+                    className="cursor-pointer text-sm text-[#C9A15C] transition hover:text-[#E4BC7A] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {t("forgotPassword")}
+                    {resettingPassword
+                      ? t("sendingReset")
+                      : t("forgotPassword")}
                   </button>
                 </div>
+
+                {resetMessage && (
+                  <div className="mb-3 rounded-md border border-[#7FA37A]/30 bg-[#7FA37A]/10 px-4 py-3">
+                    <p className="text-xs text-[#7FA37A]">
+                      {resetMessage}
+                    </p>
+                  </div>
+                )}
 
                 <div className="relative">
                   <input
@@ -264,7 +330,9 @@ export default function LoginPage() {
                     }
                     className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-[#697386] transition hover:text-[#E4BC7A]"
                   >
-                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                    {showPassword
+                      ? <EyeOffIcon />
+                      : <EyeIcon />}
                   </button>
                 </div>
               </div>

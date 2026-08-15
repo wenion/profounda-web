@@ -84,7 +84,11 @@
     "or": "或",
     "email": "邮箱",
     "password": "密码",
+
     "forgotPassword": "忘记密码？",
+    "sendingReset": "正在发送...",
+    "resetPasswordSent": "密码重置邮件已发送，请检查你的邮箱。",
+
     "signIn": "登录",
     "signingIn": "正在登录...",
     "noAccount": "还没有账户？",
@@ -102,7 +106,10 @@
 
     "errors": {
       "invalidCredentials": "无法登录，请检查邮箱和密码。",
-      "google": "无法使用 Google 登录，请重试。"
+      "google": "无法使用 Google 登录，请重试。",
+      "enterEmail": "请先输入你的邮箱地址。",
+      "invalidEmail": "请输入有效的邮箱地址。",
+      "resetPassword": "无法发送密码重置邮件，请稍后重试。"
     }
   },
   "Signup": {
@@ -132,9 +139,12 @@
     },
 
     "errors": {
-      "signup": "无法创建账户，请检查填写的信息后重试。",
+      "signup": "无法创建账户，请稍后重试。",
       "google": "无法使用 Google 继续，请重试。",
-      "passwordMismatch": "两次输入的密码不一致"
+      "passwordMismatch": "两次输入的密码不一致",
+      "emailExists": "该邮箱已注册，请直接登录。",
+      "invalidEmail": "请输入有效的邮箱地址。",
+      "weakPassword": "密码强度不足，请使用更安全的密码。"
     }
   },
   "Analysis": {

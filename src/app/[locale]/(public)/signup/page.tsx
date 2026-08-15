@@ -7,6 +7,7 @@ import {
 } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { FirebaseError } from "firebase/app";
 
 import { Link } from "@/i18n/navigation";
 import { authService } from "@/services/authService";
@@ -65,8 +66,27 @@ export default function SignupPage() {
         );
 
         router.replace(redirect);
-      } catch {
-        setError(t("errors.signup"));
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          switch (error.code) {
+            case "auth/email-already-in-use":
+              setError(t("errors.emailExists"));
+              break;
+
+            case "auth/invalid-email":
+              setError(t("errors.invalidEmail"));
+              break;
+
+            case "auth/weak-password":
+              setError(t("errors.weakPassword"));
+              break;
+
+            default:
+              setError(t("errors.signup"));
+          }
+        } else {
+          setError(t("errors.signup"));
+        }
       } finally {
         setLoading(false);
       }

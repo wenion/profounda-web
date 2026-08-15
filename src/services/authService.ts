@@ -3,6 +3,7 @@ import type { User } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -72,6 +73,15 @@ export class AuthService {
     );
 
     return credential.user;
+  }
+
+  async resetPassword(
+    email: string,
+  ): Promise<void> {
+    await sendPasswordResetEmail(
+      auth,
+      email,
+    );
   }
 
   async signOut(): Promise<void> {
