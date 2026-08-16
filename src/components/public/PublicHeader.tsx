@@ -86,6 +86,14 @@ export function PublicHeader() {
             {t("subscription")}
           </Link>
 
+
+          <Link
+            href="/messages"
+            className="text-sm text-[#8B92A6] transition hover:text-[#EDEAE1]"
+          >
+            {t("messages")}
+          </Link>
+
           <div className="h-4 w-px bg-white/10" />
 
           {/* Language */}
@@ -283,6 +291,13 @@ export function PublicHeader() {
                 className="rounded-lg px-3 py-3 text-sm text-[#8B92A6] transition hover:bg-white/[0.05] hover:text-[#EDEAE1]"
               >
                 {t("subscription")}
+              </Link>
+
+              <Link
+                href="/messages"
+                className="text-sm text-[#8B92A6] transition hover:text-[#EDEAE1]"
+              >
+                {t("messages")}
               </Link>
             </div>
 

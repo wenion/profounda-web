@@ -209,12 +209,70 @@
     "unsubscribing": "Unsubscribing...",
     "loginRequired": "Sign in to subscribe to signal emails"
   },
+  "Messages": {
+    "title": "Messages",
+    "description": "Have a question about signals, holdings, or the website? Send us a message here.",
+    "newMessage": "New message",
+
+    "loginTitle": "Sign in to send us a message",
+    "loginDescription": "Sign in to ask questions and view replies from our team. Your messages are only visible to you and administrators.",
+    "login": "Sign in",
+
+    "loading": "Loading...",
+    "loadError": "Failed to load messages. Please try again.",
+
+    "emptyTitle": "No messages yet",
+    "emptyDescription": "If you have any questions, start a new message.",
+
+    "noSubject": "No subject",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+    "new": {
+      "title": "New message",
+      "description": "Tell us what you need help with and we'll get back to you as soon as possible.",
+      "subject": "Subject",
+      "subjectPlaceholder": "Briefly describe your question",
+      "message": "Message",
+      "messagePlaceholder": "Describe your question in detail...",
+      "send": "Send",
+      "sending": "Sending...",
+      "cancel": "Cancel",
+      "back": "Back to messages",
+      "required": "Please enter a subject and message.",
+      "sendError": "Failed to send your message. Please try again.",
+      "loading": "Loading...",
+      "loginTitle": "Please sign in",
+      "loginDescription": "You need to sign in before sending us a message.",
+      "login": "Sign in"
+    },
+    "thread": {
+      "back": "Back to messages",
+      "loading": "Loading...",
+      "loadError": "Failed to load this message. Please try again.",
+      "sendError": "Failed to send your message. Please try again.",
+      "notFound": "This message does not exist or you do not have access to it.",
+      "noSubject": "No subject",
+      "privateDescription": "This conversation is only visible to you and administrators.",
+      "statusOpen": "Open",
+      "statusClosed": "Closed",
+      "admin": "Admin",
+      "empty": "No messages yet.",
+      "messagePlaceholder": "Write a reply...",
+      "send": "Send",
+      "sending": "Sending...",
+      "closedDescription": "This conversation has been closed and can no longer receive replies.",
+      "loginTitle": "Please sign in",
+      "loginDescription": "Sign in to view your messages and replies from our team.",
+      "login": "Sign in"
+    }
+  },
   "PublicNavigation": {
     "home": "Home",
     "analysis": "Exclusive Analysis",
     "subscription": "Signal Subscription",
     "language": "中文/EN",
-    "logout": "Sign Out"
+    "logout": "Sign Out",
+    "messages": "Support"
   },
   "PublicFooter": {
     "description": "Tracking institutional 13F holdings and extracting consensus through systematic modeling and signal analysis.",
@@ -313,5 +371,27 @@
       "stop": "Stop Loss",
       "hold": "Hold"
     }
+  },
+  "AdminMessages": {
+    "title": "Messages",
+    "description": "View and reply to messages from users.",
+    "loading": "Loading...",
+    "loadError": "Failed to load messages. Please try again.",
+    "noAccess": "You do not have access to this page.",
+
+    "user": "User",
+    "subject": "Subject",
+    "status": "Status",
+    "updated": "Last updated",
+
+    "unread": "{count} unread",
+    "newMessages": "{count} new",
+
+    "noSubject": "No subject",
+    "statusOpen": "Open",
+    "statusClosed": "Closed",
+
+    "emptyTitle": "No messages",
+    "emptyDescription": "Messages submitted by users will appear here."
   }
 }

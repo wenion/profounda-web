@@ -213,13 +213,71 @@
     "unsubscribing": "正在取消...",
     "loginRequired": "登录后即可订阅信号邮件"
   },
+  "Messages": {
+    "title": "留言",
+    "description": "有任何关于信号、持仓或网站的问题，都可以在这里给我们留言。",
+    "newMessage": "新留言",
+
+    "loginTitle": "登录后给我们留言",
+    "loginDescription": "登录后，你可以向我们发送问题并查看管理员的回复。你的留言仅你本人和管理员可见。",
+    "login": "登录",
+
+    "loading": "加载中...",
+    "loadError": "留言加载失败，请稍后重试。",
+
+    "emptyTitle": "还没有留言",
+    "emptyDescription": "如果你有任何问题，可以创建一条新留言。",
+
+    "noSubject": "无标题",
+    "statusOpen": "处理中",
+    "statusClosed": "已结束",
+    "new": {
+      "title": "新留言",
+      "description": "请告诉我们你遇到的问题，我们会尽快回复。",
+      "subject": "主题",
+      "subjectPlaceholder": "简单描述你的问题",
+      "message": "留言内容",
+      "messagePlaceholder": "请详细描述你的问题...",
+      "send": "发送",
+      "sending": "发送中...",
+      "cancel": "取消",
+      "back": "返回留言",
+      "required": "请填写主题和留言内容。",
+      "sendError": "发送失败，请稍后重试。",
+      "loading": "加载中...",
+      "loginTitle": "请先登录",
+      "loginDescription": "登录后才能给我们发送留言。",
+      "login": "登录"
+    },
+    "thread": {
+      "back": "返回留言",
+      "loading": "加载中...",
+      "loadError": "留言加载失败，请稍后重试。",
+      "sendError": "发送失败，请稍后重试。",
+      "notFound": "留言不存在或你没有权限查看。",
+      "noSubject": "无标题",
+      "privateDescription": "此留言仅你本人和管理员可见。",
+      "statusOpen": "处理中",
+      "statusClosed": "已结束",
+      "admin": "管理员",
+      "empty": "暂无留言内容。",
+      "messagePlaceholder": "输入你的回复...",
+      "send": "发送",
+      "sending": "发送中...",
+      "closedDescription": "此留言已结束，暂时无法继续回复。",
+      "loginTitle": "请先登录",
+      "loginDescription": "登录后才能查看你的留言和管理员回复。",
+      "login": "登录"
+    }
+  },
 
   "PublicNavigation": {
     "home": "主页",
     "analysis": "独家分析",
     "subscription": "信号订阅",
     "language": "中文/EN",
-    "logout": "退出登录"
+    "logout": "退出登录",
+    "messages": "联系我们"
   },
 
   "PublicFooter": {
@@ -320,5 +378,27 @@
       "stop": "止损",
       "hold": "维持"
     }
+  },
+  "AdminMessages": {
+    "title": "用户留言",
+    "description": "查看和回复用户提交的问题。",
+    "loading": "加载中...",
+    "loadError": "留言加载失败，请稍后重试。",
+    "noAccess": "你没有权限访问此页面.",
+
+    "user": "用户",
+    "subject": "主题",
+    "status": "状态",
+    "updated": "最后更新",
+
+    "unread": "{count} 条未读",
+    "newMessages": "{count} 条新留言",
+
+    "noSubject": "无标题",
+    "statusOpen": "处理中",
+    "statusClosed": "已结束",
+
+    "emptyTitle": "暂无用户留言",
+    "emptyDescription": "用户提交留言后会显示在这里。"
   }
 }
