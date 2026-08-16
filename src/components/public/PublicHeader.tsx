@@ -295,7 +295,8 @@ export function PublicHeader() {
 
               <Link
                 href="/messages"
-                className="text-sm text-[#8B92A6] transition hover:text-[#EDEAE1]"
+                onClick={closeMenus}
+                className="rounded-lg px-3 py-3 text-sm text-[#8B92A6] transition hover:bg-white/[0.05] hover:text-[#EDEAE1]"
               >
                 {t("messages")}
               </Link>
