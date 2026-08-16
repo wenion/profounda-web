@@ -1,33 +1,120 @@
 "use client";
 
+import {
+  useEffect,
+  useState,
+} from "react";
 import { useTranslations } from "next-intl";
 
-import holdingsData from "@/data/performance/holdings.json";
-import signal from "@/data/performance/signal.json";
-import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "@/i18n/navigation";
+import { dataService } from "@/services/dataService";
 
-type Holding = {
-  symbol: string;
-  shares: number;
-  cost_price: number;
-  current_price: number;
-  market_value: number;
-  weight_pct: number;
-  pnl_pct: number;
-};
+import type {
+  HoldingsData,
+  SignalData,
+} from "@/types/performance";
+
 
 export function HoldingsTable() {
-  const t = useTranslations("Home.holdings");
-  const { user, loading } = useAuth();
+  const t =
+    useTranslations("Home.holdings");
+
+  const {
+    user,
+    loading,
+  } = useAuth();
+
+
+  /* =======================================================
+   * Performance data
+   * ===================================================== */
+
+  const [
+    holdingsData,
+    setHoldingsData,
+  ] = useState<HoldingsData | null>(
+    null,
+  );
+
+  const [
+    signal,
+    setSignal,
+  ] = useState<SignalData | null>(
+    null,
+  );
+
+  const [
+    dataLoading,
+    setDataLoading,
+  ] = useState(true);
+
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [
+          holdings,
+          signalData,
+        ] = await Promise.all([
+          dataService.getHoldings(),
+          dataService.getSignal(),
+        ]);
+
+        setHoldingsData(holdings);
+        setSignal(signalData);
+      } catch (error) {
+        console.error(
+          "Failed to load holdings data:",
+          error,
+        );
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    void loadData();
+  }, []);
+
+
+  /* =======================================================
+   * Loading
+   * ===================================================== */
+
+  if (dataLoading) {
+    return (
+      <div className="mt-12 rounded-xl border border-white/[0.08] bg-[#101521] p-6 text-sm text-[#8B92A6]">
+        Loading holdings...
+      </div>
+    );
+  }
+
+
+  /* =======================================================
+   * Missing data
+   * ===================================================== */
+
+  if (!holdingsData || !signal) {
+    return (
+      <div className="mt-12 rounded-xl border border-white/[0.08] bg-[#101521] p-6 text-sm text-[#8B92A6]">
+        Holdings data is unavailable.
+      </div>
+    );
+  }
+
+
+  /* =======================================================
+   * Derived data
+   * ===================================================== */
 
   const holdings =
-    holdingsData.holdings as Holding[];
+    holdingsData.holdings;
 
   const stockPct =
     100 - holdingsData.cash_pct;
 
-  const isBull = signal.regime === "BULL";
+  const isBull =
+    signal.regime === "BULL";
 
   const isAuthenticated =
     !loading && !!user;

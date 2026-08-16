@@ -1,28 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useLocale,
-  useTranslations,
-} from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { authService } from "@/services/authService";
 
-export function PublicHeader() {
-  const locale = useLocale();
-  const t = useTranslations("PublicNavigation");
+
+export function AdminHeader() {
   const {
     user,
-    loading,
     profile,
+    loading,
   } = useAuth();
 
   const [profileOpen, setProfileOpen] =
     useState(false);
 
   const displayName =
+    profile?.name ||
     user?.displayName ||
     user?.email ||
     "";
@@ -30,81 +26,75 @@ export function PublicHeader() {
   const initial =
     displayName.charAt(0).toUpperCase();
 
+
   const handleLogout = async () => {
     await authService.signOut();
   };
 
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#0B0F1A]/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-        {/* Logo */}
+        {/* Brand */}
         <Link
-          href="/"
-          className="font-serif text-xl font-semibold tracking-wide text-[#EDEAE1]"
+          href="/admin"
+          className="flex items-center gap-3"
         >
-          Pro
-          <span className="text-[#C9A15C]">
-            found
+          <span className="font-serif text-xl font-semibold tracking-wide text-[#EDEAE1]">
+            Pro
+            <span className="text-[#C9A15C]">
+              found
+            </span>
+            a
           </span>
-          a
+
+          <span className="rounded-md border border-[#C9A15C]/20 bg-[#C9A15C]/[0.06] px-2 py-1 text-[10px] font-medium uppercase tracking-[0.15em] text-[#E4BC7A]">
+            Admin
+          </span>
         </Link>
 
-        {/* Desktop navigation */}
-        <nav className="flex items-center gap-5 sm:gap-6">
+
+        {/* Navigation */}
+        <nav className="flex items-center gap-5">
           <Link
-            href="/"
+            href="/admin"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("home")}
+            Dashboard
           </Link>
 
           <Link
-            href="/analysis"
+            href="/admin/users"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("analysis")}
+            Users
           </Link>
 
           <Link
-            href="/subscription"
+            href="/admin/subscriptions"
             className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
           >
-            {t("subscription")}
+            Subscriptions
           </Link>
 
-          <div className="hidden h-4 w-px bg-white/10 md:block" />
+          <Link
+            href="/admin/data"
+            className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
+          >
+            Data
+          </Link>
 
-          {/* Language */}
-          <div className="hidden items-center gap-2 text-xs sm:flex">
-            <Link
-              href="/"
-              locale="zh"
-              className={
-                locale === "zh"
-                  ? "text-[#E4BC7A]"
-                  : "text-[#5A6178] transition hover:text-[#EDEAE1]"
-              }
-            >
-              中文
-            </Link>
+          <Link
+            href="/admin/messages"
+            className="hidden text-sm text-[#8B92A6] transition hover:text-[#EDEAE1] md:block"
+          >
+            Messages
+          </Link>
 
-            <span className="text-white/20">
-              /
-            </span>
+          <div className="hidden h-6 w-px bg-white/10 md:block" />
 
-            <Link
-              href="/"
-              locale="en"
-              className={
-                locale === "en"
-                  ? "text-[#E4BC7A]"
-                  : "text-[#5A6178] transition hover:text-[#EDEAE1]"
-              }
-            >
-              EN
-            </Link>
-          </div>
-          {/* Logged-in user */}
+
+          {/* Profile */}
           {!loading && user && (
             <>
               <div className="hidden h-6 w-px bg-white/10 sm:block" />
@@ -140,14 +130,13 @@ export function PublicHeader() {
                   </span>
                 </button>
 
+
                 {profileOpen && (
                   <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/[0.1] bg-[#101521] shadow-xl">
                     {/* User info */}
                     <div className="border-b border-white/[0.08] px-4 py-3">
                       <p className="truncate text-sm font-medium text-[#EDEAE1]">
-                        {user.displayName ||
-                          profile?.name ||
-                          "User"}
+                        {displayName}
                       </p>
 
                       <p className="mt-1 truncate text-xs text-[#5A6178]">
@@ -156,18 +145,15 @@ export function PublicHeader() {
                     </div>
 
                     <div className="p-1.5">
-                      {/* Admin - admin only */}
-                      {profile?.role === "admin" && (
-                        <Link
-                          href="/admin"
-                          onClick={() =>
-                            setProfileOpen(false)
-                          }
-                          className="block rounded-md px-3 py-2 text-sm text-[#E4BC7A] transition hover:bg-white/[0.05]"
-                        >
-                          Admin Dashboard
-                        </Link>
-                      )}
+                      <Link
+                        href="/"
+                        onClick={() =>
+                          setProfileOpen(false)
+                        }
+                        className="block rounded-md px-3 py-2 text-sm text-[#8B92A6] transition hover:bg-white/[0.05] hover:text-[#EDEAE1]"
+                      >
+                        Back to Profounda
+                      </Link>
 
                       <button
                         type="button"
@@ -177,7 +163,7 @@ export function PublicHeader() {
                         }}
                         className="w-full cursor-pointer rounded-md px-3 py-2 text-left text-sm text-[#8B92A6] transition hover:bg-white/[0.05] hover:text-[#EDEAE1]"
                       >
-                        {t("logout")}
+                        Sign Out
                       </button>
                     </div>
                   </div>

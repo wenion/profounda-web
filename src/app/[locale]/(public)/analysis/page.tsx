@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -8,7 +9,11 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "@/i18n/navigation";
 
-import signal from "@/data/performance/signal.json";
+import { dataService } from "@/services/dataService";
+
+import type {
+  SignalData,
+} from "@/types/performance";
 
 const STOP_PCT = -0.15;
 
@@ -52,8 +57,48 @@ export default function AnalysisPage() {
   const isAuthenticated =
     !loading && !!user;
 
+  const [signal, setSignal] =
+    useState<SignalData | null>(null);
+
+  const [dataLoading, setDataLoading] =
+    useState(true);
+
   const [cash, setCash] =
     useState("");
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const signalData =
+          await dataService.getSignal();
+
+        setSignal(signalData);
+      } catch (error) {
+        console.error(
+          "Failed to load signal:",
+          error,
+        );
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    void loadData();
+  }, []);
+
+  const picks =
+    signal?.picks ?? [];
+
+  const pickMap = useMemo(
+    () =>
+      Object.fromEntries(
+        picks.map((pick) => [
+          pick.symbol,
+          pick,
+        ]),
+      ),
+    [picks],
+  );
 
   const [rows, setRows] = useState<
     HoldingRow[]
@@ -75,19 +120,6 @@ export default function AnalysisPage() {
 
   const [nextRowId, setNextRowId] =
     useState(4);
-
-  const picks = signal.picks;
-
-  const pickMap = useMemo(
-    () =>
-      Object.fromEntries(
-        picks.map((pick) => [
-          pick.symbol,
-          pick,
-        ]),
-      ),
-    [picks],
-  );
 
   function updateRow(
     id: number,
@@ -129,6 +161,10 @@ export default function AnalysisPage() {
   }
 
   function calculate() {
+    if (!signal) {
+      return;
+    }
+
     const stockPct =
       signal.stock_pct / 100;
 
@@ -422,6 +458,26 @@ export default function AnalysisPage() {
     !loading &&
     !isAuthenticated &&
     results.length > 2;
+
+  if (dataLoading) {
+    return (
+      <main className="mx-auto w-full max-w-6xl px-6 py-10">
+        <div className="rounded-xl border border-white/10 bg-[#111622] p-6 text-sm text-[#8B92A6]">
+          Loading signal...
+        </div>
+      </main>
+    );
+  }
+
+  if (!signal) {
+    return (
+      <main className="mx-auto w-full max-w-6xl px-6 py-10">
+        <div className="rounded-xl border border-white/10 bg-[#111622] p-6 text-sm text-[#8B92A6]">
+          Signal data is unavailable.
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-10">

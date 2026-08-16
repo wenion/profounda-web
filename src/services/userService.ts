@@ -30,6 +30,7 @@ export class UserService {
         email: user.email ?? "",
         photoURL: user.photoURL ?? null,
         plan: "free",
+        role: "user",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       },

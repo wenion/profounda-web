@@ -1,9 +1,10 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import {
   CartesianGrid,
   Line,
@@ -14,98 +15,211 @@ import {
   YAxis,
 } from "recharts";
 
-import equityCurveBacktest from "@/data/performance/equity_curve_backtest.json";
-import equityCurveLive from "@/data/performance/equity_curve_live.json";
-import headline from "@/data/performance/headline.json";
-import rebalanceLog from "@/data/performance/rebalance_log.json";
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "@/i18n/navigation";
+import {
+  dataService,
+} from "@/services/dataService";
+
+import type {
+  EquityCurvePoint,
+  HeadlineData,
+  RebalanceEntry,
+} from "@/types/performance";
+
 
 type PerformanceMode =
   | "backtest"
   | "live";
 
-type EquityPoint = {
-  date: string;
-  equity: number;
-  spy: number;
-};
+type RebalanceAction =
+  RebalanceEntry["actions"][number];
 
-type RebalanceAction = {
-  type: "buy" | "sell";
-  symbol: string;
-  detail: string;
-};
-
-type RebalanceLogItem = {
-  quarter: string;
-  date: string;
-  n_buys: number;
-  n_sells: number;
-  n_held: number;
-  actions: RebalanceAction[];
-  held_note?: string;
-};
 
 export function PerformanceChart() {
   const t = useTranslations("Home");
   const { user, loading } = useAuth();
 
   const [mode, setMode] =
-    useState<PerformanceMode>("backtest");
+    useState<PerformanceMode>(
+      "backtest",
+    );
 
-  const [showRebalanceLog, setShowRebalanceLog] =
-    useState(false);
+  const [
+    showRebalanceLog,
+    setShowRebalanceLog,
+  ] = useState(false);
 
-  const data: EquityPoint[] =
+  const [
+    equityCurveBacktest,
+    setEquityCurveBacktest,
+  ] = useState<EquityCurvePoint[]>(
+    [],
+  );
+
+  const [
+    equityCurveLive,
+    setEquityCurveLive,
+  ] = useState<EquityCurvePoint[]>(
+    [],
+  );
+
+  const [
+    headline,
+    setHeadline,
+  ] = useState<HeadlineData | null>(
+    null,
+  );
+
+  const [
+    rebalanceLog,
+    setRebalanceLog,
+  ] = useState<RebalanceEntry[]>(
+    [],
+  );
+
+  const [
+    dataLoading,
+    setDataLoading,
+  ] = useState(true);
+
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [
+          backtest,
+          live,
+          headlineData,
+          rebalanceData,
+        ] = await Promise.all([
+          dataService
+            .getEquityCurveBacktest(),
+
+          dataService
+            .getEquityCurveLive(),
+
+          dataService
+            .getHeadline(),
+
+          dataService
+            .getRebalanceLog(),
+        ]);
+
+        setEquityCurveBacktest(
+          backtest,
+        );
+
+        setEquityCurveLive(
+          live,
+        );
+
+        setHeadline(
+          headlineData,
+        );
+
+        setRebalanceLog(
+          rebalanceData,
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load performance data:",
+          error,
+        );
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    void loadData();
+  }, []);
+
+
+  const data =
     mode === "backtest"
       ? equityCurveBacktest
       : equityCurveLive;
 
   const stats =
-    mode === "backtest"
-      ? headline.backtest
-      : headline.live_account;
+    headline
+      ? mode === "backtest"
+        ? headline.backtest
+        : headline.live_account
+      : null;
 
-  const logs =
-    rebalanceLog as RebalanceLogItem[];
+
+  if (dataLoading) {
+    return (
+      <div className="mt-12 rounded-xl border border-white/[0.08] bg-[#101521] p-6 text-sm text-[#8B92A6]">
+        Loading performance data...
+      </div>
+    );
+  }
+
+
+  if (!headline || !stats) {
+    return (
+      <div className="mt-12 rounded-xl border border-white/[0.08] bg-[#101521] p-6 text-sm text-[#8B92A6]">
+        Performance data is unavailable.
+      </div>
+    );
+  }
+
 
   return (
     <div className="mt-12 overflow-hidden rounded-xl border border-white/[0.08] bg-[#101521]">
+
       {/* Top controls */}
       <div className="flex flex-col gap-5 border-b border-white/[0.08] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+
         <div className="flex gap-2">
           <ModeButton
-            active={mode === "backtest"}
+            active={
+              mode === "backtest"
+            }
             onClick={() =>
               setMode("backtest")
             }
           >
-            {t("performance.backtest")}
+            {t(
+              "performance.backtest",
+            )}
           </ModeButton>
 
           <ModeButton
-            active={mode === "live"}
+            active={
+              mode === "live"
+            }
             onClick={() =>
               setMode("live")
             }
           >
-            {t("performance.live")}
+            {t(
+              "performance.live",
+            )}
           </ModeButton>
         </div>
+
 
         {/* Legend */}
         <div className="flex items-center gap-6">
           <Legend
             color="#E4BC7A"
-            label={t("performance.strategy")}
+            label={t(
+              "performance.strategy",
+            )}
           />
 
           <Legend
             color="#4FA9A0"
-            label={t("performance.spyBuyHold")}
+            label={t(
+              "performance.spyBuyHold",
+            )}
             dashed
           />
         </div>
       </div>
+
 
       {/* Chart */}
       <div className="h-[430px] px-4 pb-4 pt-8 sm:px-7">
@@ -146,7 +260,10 @@ export function PerformanceChart() {
                   ? "log"
                   : "auto"
               }
-              domain={["auto", "auto"]}
+              domain={[
+                "auto",
+                "auto",
+              ]}
               allowDataOverflow={
                 mode === "backtest"
               }
@@ -159,8 +276,12 @@ export function PerformanceChart() {
                 fontFamily:
                   "IBM Plex Mono, monospace",
               }}
-              tickFormatter={(value) =>
-                `$${(value / 1000).toFixed(0)}k`
+              tickFormatter={(
+                value,
+              ) =>
+                `$${(
+                  value / 1000
+                ).toFixed(0)}k`
               }
             />
 
@@ -197,7 +318,9 @@ export function PerformanceChart() {
                 fill: "#4FA9A0",
                 strokeWidth: 0,
               }}
-              isAnimationActive={false}
+              isAnimationActive={
+                false
+              }
             />
 
             <Line
@@ -214,21 +337,27 @@ export function PerformanceChart() {
                 fill: "#E4BC7A",
                 strokeWidth: 0,
               }}
-              isAnimationActive={false}
+              isAnimationActive={
+                false
+              }
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
+
       {/* Bottom statistics */}
       <div className="grid grid-cols-2 border-t border-white/[0.08] md:grid-cols-4">
+
         <CurveStat
           label={t(
             "performance.initialToCurrent",
           )}
           value={`${formatMoney(
             stats.initial,
-          )} → ${formatMoney(stats.final)}`}
+          )} → ${formatMoney(
+            stats.final,
+          )}`}
         />
 
         <CurveStat
@@ -259,47 +388,69 @@ export function PerformanceChart() {
         />
       </div>
 
+
       {/* Rebalance log */}
       <div className="border-t border-white/[0.08] px-6 py-5">
+
         <div className="flex justify-center">
           <button
             type="button"
             onClick={() =>
               setShowRebalanceLog(
-                (current) => !current,
+                current =>
+                  !current,
               )
             }
             className="cursor-pointer rounded-md border border-white/[0.12] px-4 py-2 font-mono text-xs text-[#697386] transition hover:border-[#E4BC7A] hover:text-[#E4BC7A]"
           >
             {showRebalanceLog
-              ? t("performance.hideRebalances")
-              : t("performance.recentRebalances")}
+              ? t(
+                  "performance.hideRebalances",
+                )
+              : t(
+                  "performance.recentRebalances",
+                )}
           </button>
         </div>
 
+
         {showRebalanceLog && (
           <div className="mt-5 border-t border-white/[0.08] pt-5">
-            {logs.map((log) => (
-              <RebalanceLog
-                key={`${log.quarter}-${log.date}`}
-                log={log}
-                isAuthenticated={!loading && !!user}
-                buyLabel={t("performance.buy")}
-                sellLabel={t("performance.sell")}
-                summary={t(
-                  "performance.rebalanceSummary",
-                  {
-                    buys: log.n_buys,
-                    sells: log.n_sells,
-                    held: log.n_held,
-                  },
-                )}
-                loginPrompt={t(
-                  "performance.loginToViewHoldings",
-                )}
-                loginLabel={t("performance.login")}
-              />
-            ))}
+            {rebalanceLog.map(
+              (log) => (
+                <RebalanceLog
+                  key={`${log.quarter}-${log.date}`}
+                  log={log}
+                  isAuthenticated={
+                    !loading &&
+                    !!user
+                  }
+                  buyLabel={t(
+                    "performance.buy",
+                  )}
+                  sellLabel={t(
+                    "performance.sell",
+                  )}
+                  summary={t(
+                    "performance.rebalanceSummary",
+                    {
+                      buys:
+                        log.n_buys,
+                      sells:
+                        log.n_sells,
+                      held:
+                        log.n_held,
+                    },
+                  )}
+                  loginPrompt={t(
+                    "performance.loginToViewHoldings",
+                  )}
+                  loginLabel={t(
+                    "performance.login",
+                  )}
+                />
+              ),
+            )}
           </div>
         )}
       </div>
@@ -307,11 +458,13 @@ export function PerformanceChart() {
   );
 }
 
+
 type ModeButtonProps = {
   active: boolean;
   children: React.ReactNode;
   onClick: () => void;
 };
+
 
 function ModeButton({
   active,
@@ -334,11 +487,13 @@ function ModeButton({
   );
 }
 
+
 type LegendProps = {
   color: string;
   label: string;
   dashed?: boolean;
 };
+
 
 function Legend({
   color,
@@ -360,7 +515,9 @@ function Legend({
           stroke={color}
           strokeWidth="2"
           strokeDasharray={
-            dashed ? "3 3" : undefined
+            dashed
+              ? "3 3"
+              : undefined
           }
         />
       </svg>
@@ -372,11 +529,13 @@ function Legend({
   );
 }
 
+
 type CurveStatProps = {
   label: string;
   value: string;
   tone?: "green" | "red";
 };
+
 
 function CurveStat({
   label,
@@ -405,8 +564,9 @@ function CurveStat({
   );
 }
 
+
 type RebalanceLogProps = {
-  log: RebalanceLogItem;
+  log: RebalanceEntry;
   buyLabel: string;
   sellLabel: string;
   summary: string;
@@ -414,6 +574,7 @@ type RebalanceLogProps = {
   loginPrompt: string;
   loginLabel: string;
 };
+
 
 function RebalanceLog({
   log,
@@ -424,17 +585,24 @@ function RebalanceLog({
   loginPrompt,
   loginLabel,
 }: RebalanceLogProps) {
-  const visibleActions = isAuthenticated
-    ? log.actions
-    : log.actions.slice(0, 2);
+  const visibleActions =
+    isAuthenticated
+      ? log.actions
+      : log.actions.slice(
+          0,
+          2,
+        );
 
   const hasHiddenActions =
-    !isAuthenticated && log.actions.length > 2;
+    !isAuthenticated &&
+    log.actions.length > 2;
 
   return (
     <div className="mb-6 last:mb-0">
+
       {/* Quarter header */}
       <div className="mb-3 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+
         <h3 className="font-serif text-lg font-semibold text-[#EDEAE1]">
           {log.quarter}
         </h3>
@@ -444,15 +612,20 @@ function RebalanceLog({
         </p>
       </div>
 
+
       {/* Visible actions */}
       <div className="flex flex-wrap gap-2">
         {visibleActions.map(
-          (action, index) => (
+          (
+            action,
+            index,
+          ) => (
             <RebalanceActionChip
               key={`${log.quarter}-${action.symbol}-${action.type}-${index}`}
               action={action}
               label={
-                action.type === "buy"
+                action.type ===
+                "buy"
                   ? buyLabel
                   : sellLabel
               }
@@ -461,12 +634,13 @@ function RebalanceLog({
         )}
       </div>
 
+
       {/* Locked actions */}
       {hasHiddenActions && (
         <div className="relative mt-2 overflow-hidden rounded-lg">
-          {/* Fake blurred holdings */}
+
           <div
-            className="pointer-events-none flex flex-wrap gap-2 select-none blur-[5px] opacity-40"
+            className="pointer-events-none flex flex-wrap gap-2 select-none opacity-40 blur-[5px]"
             aria-hidden="true"
           >
             <div className="h-8 w-32 rounded-md bg-white/10" />
@@ -476,6 +650,7 @@ function RebalanceLog({
           </div>
 
           <div className="mt-4 flex items-center gap-3 rounded-lg border border-[#C9A15C]/15 bg-[#C9A15C]/[0.04] px-4 py-3">
+
             <span className="text-sm">
               🔒
             </span>
@@ -494,20 +669,24 @@ function RebalanceLog({
         </div>
       )}
 
+
       {/* Held note */}
-      {isAuthenticated && log.held_note && (
-        <p className="mt-3 text-xs leading-6 text-[#5A6178]">
-          ℹ️ {log.held_note}
-        </p>
-      )}
+      {isAuthenticated &&
+        log.held_note && (
+          <p className="mt-3 text-xs leading-6 text-[#5A6178]">
+            ℹ️ {log.held_note}
+          </p>
+        )}
     </div>
   );
 }
+
 
 type RebalanceActionChipProps = {
   action: RebalanceAction;
   label: string;
 };
+
 
 function RebalanceActionChip({
   action,
@@ -525,7 +704,9 @@ function RebalanceActionChip({
           : "border-[#C1614F]/30 bg-[#C1614F]/10 text-[#C1614F]",
       ].join(" ")}
     >
-      <span>{label}</span>
+      <span>
+        {label}
+      </span>
 
       <span className="font-semibold text-[#E4BC7A]">
         {action.symbol}
@@ -538,10 +719,12 @@ function RebalanceActionChip({
   );
 }
 
+
 type TooltipPayloadItem = {
   dataKey?: string;
   value?: number;
 };
+
 
 type CurveTooltipProps = {
   active?: boolean;
@@ -551,6 +734,7 @@ type CurveTooltipProps = {
   spyLabel: string;
 };
 
+
 function CurveTooltip({
   active,
   label,
@@ -558,22 +742,30 @@ function CurveTooltip({
   strategyLabel,
   spyLabel,
 }: CurveTooltipProps) {
-  if (!active || !payload?.length) {
+  if (
+    !active ||
+    !payload?.length
+  ) {
     return null;
   }
 
-  const strategy = payload.find(
-    (item) =>
-      item.dataKey === "equity",
-  );
+  const strategy =
+    payload.find(
+      item =>
+        item.dataKey ===
+        "equity",
+    );
 
-  const spy = payload.find(
-    (item) =>
-      item.dataKey === "spy",
-  );
+  const spy =
+    payload.find(
+      item =>
+        item.dataKey ===
+        "spy",
+    );
 
   return (
     <div className="rounded-md border border-[#1C2438] bg-[#121826] px-4 py-3 shadow-xl">
+
       <p className="mb-2 font-mono text-[10px] text-[#8B92A6]">
         {label}
       </p>
@@ -599,6 +791,7 @@ function CurveTooltip({
   );
 }
 
+
 function formatPct(
   value: number,
   digits = 1,
@@ -608,11 +801,15 @@ function formatPct(
   )}%`;
 }
 
-function formatMoney(value: number) {
-  return `$${(value / 1000).toFixed(
-    0,
-  )}k`;
+
+function formatMoney(
+  value: number,
+) {
+  return `$${(
+    value / 1000
+  ).toFixed(0)}k`;
 }
+
 
 function formatMoneyDetailed(
   value: number,
