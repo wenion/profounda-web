@@ -255,18 +255,12 @@ export function PerformanceChart() {
             />
 
             <YAxis
-              scale={
-                mode === "backtest"
-                  ? "log"
-                  : "auto"
-              }
+              scale="log"
               domain={[
                 "auto",
                 "auto",
               ]}
-              allowDataOverflow={
-                mode === "backtest"
-              }
+              allowDataOverflow
               axisLine={false}
               tickLine={false}
               width={65}
