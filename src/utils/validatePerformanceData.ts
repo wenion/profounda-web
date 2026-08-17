@@ -49,11 +49,6 @@ function validateHeadline(
     );
 
   requireString(
-    backtest.strategy,
-    "backtest.strategy",
-  );
-
-  requireString(
     backtest.start,
     "backtest.start",
   );
