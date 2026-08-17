@@ -35,8 +35,8 @@ type ResultRow = {
   symbol: string;
   action: string;
   badge: ResultBadge;
-  cur: number;
-  target: number;
+  cur: number | null;
+  target: number | null;
   price: number | null;
   stop: number | null;
 };
@@ -273,16 +273,16 @@ export default function AnalysisPage() {
       if (!pick) {
         nextResults.push({
           symbol: holding.symbol,
-          action: "卖出",
+          action: "自行决定",
           badge: "sell",
-          cur: holding.shares,
-          target: 0,
+          cur: null,
+          target: null,
           price: null,
-          stop:
-            holding.cost > 0
-              ? holding.cost *
-                (1 + STOP_PCT)
-              : null,
+          stop: null,
+            // holding.cost > 0
+            //   ? holding.cost *
+            //     (1 + STOP_PCT)
+            //   : null,
         });
 
         continue;
@@ -503,7 +503,7 @@ export default function AnalysisPage() {
         <div className="rounded-xl border border-white/10 bg-[#111622] p-6">
           <div className="mb-6">
             <label className="mb-2 block text-sm text-[#A8ADBA]">
-              Cash
+              Available Cash
             </label>
 
             <div className="relative">
@@ -550,7 +550,7 @@ export default function AnalysisPage() {
 
           <div className="mb-3 grid grid-cols-[1.2fr_1fr_1fr_40px] gap-3 px-1 text-xs uppercase tracking-wider text-[#5A6178]">
             <div>Symbol</div>
-            <div>Cost / Share</div>
+            <div>Cost</div>
             <div>Shares</div>
             <div />
           </div>
@@ -638,14 +638,14 @@ export default function AnalysisPage() {
           <button
             type="button"
             onClick={addRow}
-            className="mt-4 text-sm text-[#C9A15C] transition hover:text-[#D8B979]"
+            className="mt-4 text-sm cursor-pointer text-[#C9A15C] transition hover:text-[#D8B979]"
           >
             + Add holding
           </button>
 
           <button
             type="submit"
-            className="mt-8 h-12 w-full rounded-md bg-[#C9A15C] font-medium text-[#0B0F1A] transition hover:opacity-90"
+            className="mt-8 h-12 w-full cursor-pointer rounded-md bg-[#C9A15C] font-medium text-[#0B0F1A] transition hover:opacity-90"
           >
             Calculate Rebalance
           </button>
@@ -854,7 +854,13 @@ function formatMoney(
   return `$${value.toFixed(2)}`;
 }
 
-function formatShares(value: number) {
+function formatShares(
+  value: number | null,
+) {
+  if (value === null) {
+    return "—";
+  }
+
   return value.toLocaleString(
     undefined,
     {

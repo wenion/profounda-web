@@ -159,17 +159,6 @@ export default function LoginPage() {
       <div className="relative mx-auto grid min-h-screen max-w-7xl lg:grid-cols-2">
         {/* Left */}
         <section className="hidden border-r border-white/[0.07] px-12 py-12 lg:flex lg:flex-col xl:px-20">
-          {/* Brand */}
-          {/* <Link
-            href="/"
-            className="inline-flex w-fit items-center gap-3"
-          >
-            <LogoMark />
-
-            <span className="font-serif text-xl font-semibold tracking-tight text-[#EDEAE1]">
-              Profounda
-            </span>
-          </Link> */}
 
           {/* Hero */}
           <div className="my-auto max-w-lg">
@@ -180,10 +169,6 @@ export default function LoginPage() {
             <h1 className="mt-6 font-serif text-5xl font-semibold leading-[1.12] tracking-tight text-[#EDEAE1] xl:text-6xl">
               {t("hero.title")}
             </h1>
-
-            <p className="mt-7 max-w-md text-base leading-8 text-[#8B92A6]">
-              {t("hero.description")}
-            </p>
 
             <div className="mt-12 space-y-6">
               <Feature>

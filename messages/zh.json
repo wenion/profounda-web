@@ -10,7 +10,7 @@
   },
 
   "Home": {
-    "eyebrow": "顶级机构 · 实时追踪 13F 持仓",
+    "eyebrow": "顶级机构 · 实时追踪资金动向",
     "headline": {
       "line1": "当顶级投资人",
       "line2": "悄悄买入同一件事，",
@@ -99,8 +99,7 @@
     "hero": {
       "eyebrow": "PROFOUNDA",
       "title": "把机构信号，变成你的投资组合。",
-      "description": "从顶级机构 13F 共识，到你的实际持仓与调仓决策，在一个系统里完成。",
-      "tracking": "持续追踪顶级机构的 13F 持仓变化",
+      "tracking": "顶级投资人的资金流向",
       "portfolio": "将策略信号与你的实际持仓连接",
       "rebalance": "根据目标配置生成清晰的调仓方案"
     },
@@ -133,8 +132,7 @@
     "hero": {
       "eyebrow": "PROFOUNDA",
       "title": "把机构信号，变成你的投资组合。",
-      "description": "从顶级机构 13F 共识，到你的实际持仓与调仓决策，在一个系统里完成。",
-      "tracking": "持续追踪顶级机构的 13F 持仓变化",
+      "tracking": "顶级投资人的资金流向",
       "portfolio": "将策略信号与你的实际持仓连接",
       "rebalance": "根据目标配置生成清晰的调仓方案"
     },
@@ -282,7 +280,6 @@
   },
 
   "PublicFooter": {
-    "description": "追踪顶级机构 13F 持仓，通过系统建模与信号提取发现机构共识。",
     "performance": "业绩",
     "community": "社区",
     "disclaimer": "Profounda 提供的数据、模型与分析仅供研究和信息参考，不构成投资建议。历史表现和回测结果不代表未来收益。"

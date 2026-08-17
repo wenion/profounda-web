@@ -1,13 +1,31 @@
 "use client";
 
-import { Community } from "@/components/public/Community";
-import { HoldingsTable } from "@/components/public/HoldingsTable";
-import { PerformanceChart } from "@/components/public/PerformanceChart";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import { useTranslations } from "next-intl";
 
+import { HoldingsTable } from "@/components/public/HoldingsTable";
+import { PerformanceChart } from "@/components/public/PerformanceChart";
+import {
+  HomeConfig,
+  siteConfigService,
+} from "@/services/siteConfigService";
+
 export default function HomePage() {
   const t = useTranslations("Home");
+
+  const [config, setConfig] =
+    useState<HomeConfig | null>(null);
+
+  useEffect(() => {
+    siteConfigService
+      .getHomeConfig()
+      .then(setConfig)
+      .catch(console.error);
+  }, []);
 
   return (
     <main>
@@ -54,7 +72,7 @@ export default function HomePage() {
                 </span>
 
                 <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                  2026-08-17
+                  {config?.currentRebalance ?? "—"}
                 </span>
               </div>
 
@@ -66,7 +84,7 @@ export default function HomePage() {
                 </span>
 
                 <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                  2026-11-16
+                  {config?.nextRebalance ?? "—"}
                 </span>
               </div>
             </div>
@@ -76,31 +94,51 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-2 md:grid-cols-5">
             <Metric
               label={t("metrics.cagr")}
-              value="25.92%"
+              value={
+                config
+                  ? `${config.cagr.toFixed(2)}%`
+                  : "—"
+              }
               tone="gold"
             />
 
             <Metric
               label={t("metrics.liveReturn")}
-              value="+42.3%"
+              value={
+                config
+                  ? formatPercent(config.liveReturn)
+                  : "—"
+              }
               tone="green"
             />
 
             <Metric
               label={t("metrics.spy")}
-              value="+12.6%"
+              value={
+                config
+                  ? formatPercent(config.spyReturn)
+                  : "—"
+              }
               tone="white"
             />
 
             <Metric
               label={t("metrics.maxDrawdown")}
-              value="-25.3%"
+              value={
+                config
+                  ? `${config.maxDrawdown.toFixed(1)}%`
+                  : "—"
+              }
               tone="red"
             />
 
             <Metric
               label={t("metrics.sharpe")}
-              value="1.22"
+              value={
+                config
+                  ? config.sharpe.toFixed(2)
+                  : "—"
+              }
               tone="white"
             />
           </div>
@@ -232,4 +270,10 @@ function SectionHeader({
       )}
     </div>
   );
+}
+
+function formatPercent(value: number) {
+  const sign = value > 0 ? "+" : "";
+
+  return `${sign}${value.toFixed(1)}%`;
 }

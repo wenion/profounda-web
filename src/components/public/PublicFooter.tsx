@@ -23,10 +23,6 @@ export function PublicFooter() {
               </span>
               a
             </Link>
-
-            <p className="mt-3 max-w-md text-xs leading-5 text-[#5A6178]">
-              {t("description")}
-            </p>
           </div>
 
           {/* Links */}

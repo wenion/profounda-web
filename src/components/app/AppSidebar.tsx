@@ -102,7 +102,7 @@ export function AppSidebar() {
           <p className="text-xs leading-5 text-[#5A6178]">
             Profounda
             <br />
-            13F Consensus + Momentum
+            Investor Consensus + Momentum
           </p>
         </div>
       </nav>

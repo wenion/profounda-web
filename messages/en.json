@@ -9,7 +9,7 @@
     "signup": "Sign up"
   },
   "Home": {
-    "eyebrow": "Leading Institutions · Real-Time 13F Tracking",
+    "eyebrow": "Leading Investors · Tracking Investment Moves",
     "headline": {
       "line1": "When the world's top investors",
       "line2": "quietly buy the same thing,",
@@ -95,8 +95,7 @@
     "hero": {
       "eyebrow": "PROFOUNDA",
       "title": "Turn institutional signals into your portfolio.",
-      "description": "From institutional 13F consensus to your actual holdings and rebalance decisions, all in one system.",
-      "tracking": "Continuously track 13F position changes from leading institutions",
+      "tracking": "Track the portfolio moves of top investors",
       "portfolio": "Connect strategy signals with your actual portfolio",
       "rebalance": "Generate clear rebalance actions from your target allocation"
     },
@@ -129,8 +128,7 @@
     "hero": {
       "eyebrow": "PROFOUNDA",
       "title": "Turn institutional signals into your portfolio.",
-      "description": "From institutional 13F consensus to your actual holdings and rebalance decisions, all in one system.",
-      "tracking": "Continuously track 13F position changes from leading institutions",
+      "tracking": "Track the portfolio moves of top investors",
       "portfolio": "Connect strategy signals with your actual portfolio",
       "rebalance": "Generate clear rebalance actions from your target allocation"
     },
@@ -276,7 +274,6 @@
     "messages": "Support"
   },
   "PublicFooter": {
-    "description": "Tracking institutional 13F holdings and extracting consensus through systematic modeling and signal analysis.",
     "performance": "Performance",
     "community": "Community",
     "disclaimer": "Data, models and analysis provided by Profounda are for research and informational purposes only and do not constitute investment advice. Historical and backtested performance does not guarantee future results."
