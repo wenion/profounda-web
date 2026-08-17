@@ -12,12 +12,13 @@
   "Home": {
     "eyebrow": "顶级机构 · 实时追踪 13F 持仓",
     "headline": {
-      "line1": "当顶级基金经理",
+      "line1": "当顶级投资人",
       "line2": "悄悄买入同一件事，",
       "line3": "这不该是秘密。"
     },
-    "description": "Profounda 持续追踪巴菲特、Ackman、Klarman 等顶级机构的 SEC 13F 披露，通过系统建模与信号提取，把分散在上万条持仓记录里的共识，变成一份可执行的信号。",
+    "description": "Profounda 持续追踪巴菲特、Ackman、Klarman 等顶级投资人的资金流向，通过系统建模与信号提取，把分散在上万条持仓记录里的共识，变成一份可执行的信号。",
 
+    "currentRebalance": "本次调仓日期",
     "nextRebalance": "下次重大调仓日期",
 
     "metrics": {

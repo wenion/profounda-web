@@ -11,12 +11,13 @@
   "Home": {
     "eyebrow": "Leading Institutions · Real-Time 13F Tracking",
     "headline": {
-      "line1": "When the world's best investors",
+      "line1": "When the world's top investors",
       "line2": "quietly buy the same thing,",
       "line3": "it shouldn't be a secret."
     },
-    "description": "Profounda continuously tracks SEC 13F filings from leading institutions including Buffett, Ackman and Klarman. Through systematic modeling and signal extraction, we turn consensus hidden across tens of thousands of holdings into actionable signals.",
+    "description": "Profounda tracks the portfolio moves of top investors like Buffett, Ackman and Klarman, using systematic modeling to uncover consensus across thousands of holdings and turn it into actionable investment signals.",
 
+    "currentRebalance": "Current Rebalance Date",
     "nextRebalance": "Next major rebalance",
 
     "metrics": {

@@ -44,8 +44,20 @@ export default function HomePage() {
               {t("description")}
             </p>
 
-            {/* Next rebalance */}
-            <div className="mt-10 flex justify-start">
+            {/* Rebalance dates */}
+            <div className="mt-10 flex flex-wrap justify-start gap-3">
+              <div className="inline-flex items-center gap-4 rounded-full border border-[#C9A15C]/20 bg-[#C9A15C]/[0.06] px-5 py-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A15C]" />
+
+                <span className="text-xs text-[#8B92A6]">
+                  {t("currentRebalance")}
+                </span>
+
+                <span className="font-mono text-xs font-medium text-[#E4BC7A]">
+                  2026-08-17
+                </span>
+              </div>
+
               <div className="inline-flex items-center gap-4 rounded-full border border-[#C9A15C]/20 bg-[#C9A15C]/[0.06] px-5 py-2.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#C9A15C]" />
 
@@ -54,7 +66,7 @@ export default function HomePage() {
                 </span>
 
                 <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                  2026-08-15
+                  2026-11-16
                 </span>
               </div>
             </div>
