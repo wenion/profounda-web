@@ -548,7 +548,8 @@ export default function AnalysisPage() {
             </div>
           </div>
 
-          <div className="mb-3 grid grid-cols-[1.2fr_1fr_1fr_40px] gap-3 px-1 text-xs uppercase tracking-wider text-[#5A6178]">
+          {/* Desktop header */}
+          <div className="mb-3 hidden grid-cols-[1.2fr_1fr_1fr_40px] gap-3 px-1 text-xs uppercase tracking-wider text-[#5A6178] sm:grid">
             <div>Symbol</div>
             <div>Cost</div>
             <div>Shares</div>
@@ -559,75 +560,96 @@ export default function AnalysisPage() {
             {rows.map((row) => (
               <div
                 key={row.id}
-                className="grid grid-cols-[1.2fr_1fr_1fr_40px] gap-3"
+                className="
+                  relative grid grid-cols-2 gap-3
+                  rounded-lg border border-white/10 p-3
+                  sm:grid-cols-[1.2fr_1fr_1fr_40px]
+                  sm:rounded-none sm:border-0 sm:p-0
+                "
               >
-                <input
-                  type="text"
-                  value={
-                    row.symbol
-                  }
-                  onChange={(
-                    event,
-                  ) =>
-                    updateRow(
-                      row.id,
-                      "symbol",
-                      event.target
-                        .value,
-                    )
-                  }
-                  placeholder="MU"
-                  className="h-11 rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm uppercase text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
-                />
+                {/* Symbol */}
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="mb-1.5 block text-xs uppercase tracking-wider text-[#5A6178] sm:hidden">
+                    Symbol
+                  </label>
 
-                <input
-                  type="number"
-                  step="any"
-                  min="0"
-                  value={row.cost}
-                  onChange={(
-                    event,
-                  ) =>
-                    updateRow(
-                      row.id,
-                      "cost",
-                      event.target
-                        .value,
-                    )
-                  }
-                  placeholder="0.00"
-                  className="h-11 rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
-                />
+                  <input
+                    type="text"
+                    value={row.symbol}
+                    onChange={(event) =>
+                      updateRow(
+                        row.id,
+                        "symbol",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="MU"
+                    className="h-11 w-full rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm uppercase text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
+                  />
+                </div>
 
-                <input
-                  type="number"
-                  step="any"
-                  min="0"
-                  value={
-                    row.shares
-                  }
-                  onChange={(
-                    event,
-                  ) =>
-                    updateRow(
-                      row.id,
-                      "shares",
-                      event.target
-                        .value,
-                    )
-                  }
-                  placeholder="0"
-                  className="h-11 rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
-                />
+                {/* Cost */}
+                <div>
+                  <label className="mb-1.5 block text-xs uppercase tracking-wider text-[#5A6178] sm:hidden">
+                    Cost
+                  </label>
 
+                  <input
+                    type="number"
+                    step="any"
+                    min="0"
+                    value={row.cost}
+                    onChange={(event) =>
+                      updateRow(
+                        row.id,
+                        "cost",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="0.00"
+                    className="h-11 w-full rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
+                  />
+                </div>
+
+                {/* Shares */}
+                <div>
+                  <label className="mb-1.5 block text-xs uppercase tracking-wider text-[#5A6178] sm:hidden">
+                    Shares
+                  </label>
+
+                  <input
+                    type="number"
+                    step="any"
+                    min="0"
+                    value={row.shares}
+                    onChange={(event) =>
+                      updateRow(
+                        row.id,
+                        "shares",
+                        event.target.value,
+                      )
+                    }
+                    placeholder="0"
+                    className="h-11 w-full rounded-md border border-white/10 bg-[#0B0F1A] px-4 font-mono text-sm text-[#EDEAE1] outline-none focus:border-[#C9A15C]/60"
+                  />
+                </div>
+
+                {/* Remove */}
                 <button
                   type="button"
                   onClick={() =>
-                    removeRow(
-                      row.id,
-                    )
+                    removeRow(row.id)
                   }
-                  className="h-11 rounded-md text-lg text-[#5A6178] transition hover:bg-white/5 hover:text-[#EDEAE1]"
+                  aria-label="Remove holding"
+                  className="
+                    absolute right-2 top-2
+                    flex h-8 w-8 cursor-pointer
+                    items-center justify-center rounded-md
+                    text-lg text-[#5A6178]
+                    transition
+                    hover:bg-white/5 hover:text-[#EDEAE1]
+                    sm:static sm:h-11 sm:w-auto
+                  "
                 >
                   ×
                 </button>
