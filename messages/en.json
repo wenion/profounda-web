@@ -25,7 +25,7 @@
       "liveReturn": "Live Return (2026 YTD)",
       "spy": "SPY · Same Period",
       "maxDrawdown": "Max Drawdown",
-      "sharpe": "Sharpe"
+      "sharpe": "SHARPE"
     },
 
     "performance": {

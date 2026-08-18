@@ -10,9 +10,20 @@ import { useTranslations } from "next-intl";
 import { HoldingsTable } from "@/components/public/HoldingsTable";
 import { PerformanceChart } from "@/components/public/PerformanceChart";
 import {
+  dataService,
+} from "@/services/dataService";
+import {
   HomeConfig,
   siteConfigService,
 } from "@/services/siteConfigService";
+
+import type {
+  EquityCurvePoint,
+  HeadlineData,
+  HoldingsData,
+  RebalanceEntry,
+  SignalData,
+} from "@/types/performance";
 
 export default function HomePage() {
   const t = useTranslations("Home");
@@ -20,10 +31,18 @@ export default function HomePage() {
   const [config, setConfig] =
     useState<HomeConfig | null>(null);
 
+  const [headline, setHeadline] =
+    useState<HeadlineData | null>(null);
+
   useEffect(() => {
-    siteConfigService
-      .getHomeConfig()
-      .then(setConfig)
+    Promise.all([
+      siteConfigService.getHomeConfig(),
+      dataService.getHeadline(),
+    ])
+      .then(([config, headline]) => {
+        setConfig(config);
+        setHeadline(headline);
+      })
       .catch(console.error);
   }, []);
 
@@ -95,8 +114,8 @@ export default function HomePage() {
             <Metric
               label={t("metrics.cagr")}
               value={
-                config
-                  ? `${config.cagr.toFixed(2)}%`
+                headline
+                  ? `${headline.backtest.cagr_pct.toFixed(2)}%`
                   : "—"
               }
               tone="gold"
@@ -105,8 +124,10 @@ export default function HomePage() {
             <Metric
               label={t("metrics.liveReturn")}
               value={
-                config
-                  ? formatPercent(config.liveReturn)
+                headline
+                  ? formatPercent(
+                      headline.live_account.total_return_pct,
+                    )
                   : "—"
               }
               tone="green"
@@ -115,8 +136,10 @@ export default function HomePage() {
             <Metric
               label={t("metrics.spy")}
               value={
-                config
-                  ? formatPercent(config.spyReturn)
+                headline
+                  ? formatPercent(
+                      headline.live_account.spy_return_pct,
+                    )
                   : "—"
               }
               tone="white"
@@ -125,8 +148,8 @@ export default function HomePage() {
             <Metric
               label={t("metrics.maxDrawdown")}
               value={
-                config
-                  ? `${config.maxDrawdown.toFixed(1)}%`
+                headline
+                  ? `${headline.backtest.max_dd_pct.toFixed(1)}%`
                   : "—"
               }
               tone="red"
@@ -135,8 +158,8 @@ export default function HomePage() {
             <Metric
               label={t("metrics.sharpe")}
               value={
-                config
-                  ? config.sharpe.toFixed(2)
+                headline
+                  ? headline.backtest.sharpe.toFixed(2)
                   : "—"
               }
               tone="white"

@@ -26,7 +26,7 @@
       "liveReturn": "实盘收益 (2026至今)",
       "spy": "同期 SPY",
       "maxDrawdown": "最大回撤",
-      "sharpe": "Sharpe"
+      "sharpe": "SHARPE"
     },
 
     "performance": {
