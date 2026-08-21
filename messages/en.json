@@ -32,7 +32,7 @@
       "eyebrow": "Performance",
       "title": "Performance",
       "placeholder": "Performance curve will be displayed here",
-      "note": "Strategy backtest from Sep 2006 to Jul 2026, with the live account since Jan 2026 compared against SPY buy-and-hold.",
+      "note": "Strategy backtest from Sep 2006 to Oct 2025, with the live account since Jan 2026 compared against SPY buy-and-hold.",
       "backtest": "20-Year Backtest",
       "live": "Live (2026 YTD)",
       "strategy": "Strategy",

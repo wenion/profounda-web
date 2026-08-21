@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -12,15 +13,9 @@ import { PerformanceChart } from "@/components/public/PerformanceChart";
 import {
   dataService,
 } from "@/services/dataService";
-import {
-  HomeConfig,
-  siteConfigService,
-} from "@/services/siteConfigService";
 
 import type {
-  EquityCurvePoint,
   HeadlineData,
-  HoldingsData,
   RebalanceEntry,
   SignalData,
 } from "@/types/performance";
@@ -28,23 +23,67 @@ import type {
 export default function HomePage() {
   const t = useTranslations("Home");
 
-  const [config, setConfig] =
-    useState<HomeConfig | null>(null);
-
   const [headline, setHeadline] =
     useState<HeadlineData | null>(null);
 
+  const [signal, setSignal] =
+    useState<SignalData | null>(null);
+  
+  const [
+    rebalanceLog,
+    setRebalanceLog,
+  ] = useState<RebalanceEntry[]>(
+    [],
+  );
+
+  
   useEffect(() => {
-    Promise.all([
-      siteConfigService.getHomeConfig(),
-      dataService.getHeadline(),
-    ])
-      .then(([config, headline]) => {
-        setConfig(config);
-        setHeadline(headline);
-      })
-      .catch(console.error);
+    const loadData = async () => {
+      try {
+        const [
+          signalData,
+          headlineData,
+          rebalanceData,
+        ] = await Promise.all([
+          dataService
+            .getSignal(),
+
+          dataService
+            .getHeadline(),
+
+          dataService
+            .getRebalanceLog(),
+        ]);
+
+        setSignal(
+          signalData,
+        );
+
+        setHeadline(
+          headlineData,
+        );
+
+        setRebalanceLog(
+          rebalanceData,
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load performance data:",
+          error,
+        );
+      }
+    };
+
+    void loadData();
   }, []);
+
+  const latestEntry = useMemo(() => {
+    if (!rebalanceLog.length) return undefined;
+
+    return rebalanceLog.reduce((latest, current) =>
+      current.date > latest.date ? current : latest
+    );
+  }, [rebalanceLog]);
 
   return (
     <main>
@@ -91,7 +130,7 @@ export default function HomePage() {
                 </span>
 
                 <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                  {config?.currentRebalance ?? "—"}
+                  {latestEntry?.date ?? "—"}
                 </span>
               </div>
 
@@ -103,7 +142,7 @@ export default function HomePage() {
                 </span>
 
                 <span className="font-mono text-xs font-medium text-[#E4BC7A]">
-                  {config?.nextRebalance ?? "—"}
+                  {signal?.next_signal_date ?? "—"}
                 </span>
               </div>
             </div>
